@@ -28,7 +28,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 			.setName('Key')
 			.setDesc('The key which you want to copy the value')
 			.addText(text => text
-				.setPlaceholder('Enter the key you want to copy the value')
+				.setPlaceholder('key1, key2, key3,…')
 				.setValue(this.plugin.settings.link)
 				.onChange(async (value) => {
 					this.plugin.settings.link = value;
