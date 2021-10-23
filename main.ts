@@ -28,28 +28,34 @@ export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
 
 	async onload() {
+		console.log("MetaCopy loaded");
 		await this.loadSettings();
 		this.addSettingTab(new CopySettingsTabs(this.app, this));
 
 		const key_meta = this.settings.link;
-		function get_value(app : App, file : TAbstractFile){
+		async function get_value(app : App, file : TAbstractFile){
 			const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
-			return frontmatter[key_meta]
+			const link_value = frontmatter[key_meta]
+			if (link_value !== undefined) {
+				await copy(link_value)
+			} else {
+				new Notice('Could not copy to clipboard : the key ' + key_meta + " don't" +
+					" exist in this file")
+			}
 		}
 
 		this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
 			menu.addItem((item) => {
 				item.setTitle("Copy value : " + key_meta).setIcon("paste-text").onClick(async () => {
-					const link_value = get_value(this.app, file)
-					await copy(link_value)
+					await get_value(this.app, file)
 				});
 			});
 		}));
+
 		this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor, view) => {
 			menu.addItem((item) => {
 				item.setTitle("\"Copy value : \" + key_meta").setIcon("paste-text").onClick(async () => {
-				const link_value = get_value(this.app, view.file)
-				await copy(link_value)
+					await get_value(this.app, view.file)
 				});
 			});
 		}));
@@ -59,14 +65,14 @@ export default class MetaCopy extends Plugin {
 			id: 'obsidian-metacopy',
 			name: 'Metacopy',
 			editorCallback: (editor: Editor, view: MarkdownView) => {
-				const link_value = get_value(this.app, view.file)
-				copy(link_value)
+				get_value(this.app, view.file)
 			}
 		});
 	}
 
 	async onunload() {
 		await this.saveSettings();
+		console.log("MetaCopy unloaded");
 	}
 
 	async loadSettings() {
@@ -86,7 +92,7 @@ class CopySettingsTabs extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
-	display(): void {
+	display(): any {
 		let {containerEl} = this;
 
 		containerEl.empty();
