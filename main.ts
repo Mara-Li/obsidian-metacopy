@@ -1,83 +1,72 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
-interface MyPluginSettings {
-	mySetting: string;
+export async function copy(content: string) {
+	await navigator.clipboard.writeText(content).then(
+		() => new Notice("Copied to clipboard"),
+		() => new Notice("Could not copy to clipboard")
+	);
 }
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
+import {
+	App,
+	Editor,
+	MarkdownView,
+	Notice,
+	Plugin,
+	PluginSettingTab,
+	Setting,
+	TAbstractFile
+} from 'obsidian';
+
+interface MetaCopySettings {
+	link: string;
 }
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+const DEFAULT_SETTINGS: MetaCopySettings = {
+	link: 'link'
+}
+
+export default class MetaCopy extends Plugin {
+	settings: MetaCopySettings;
 
 	async onload() {
 		await this.loadSettings();
+		this.addSettingTab(new CopySettingsTabs(this.app, this));
 
-		// This creates an icon in the left ribbon.
-		let ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
+		const key_meta = this.settings.link;
+		function get_value(app : App, file : TAbstractFile){
+			const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
+			return frontmatter[key_meta]
+		}
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		let statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
+		this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
+			menu.addItem((item) => {
+				item.setTitle("Copy value : " + key_meta).setIcon("paste-text").onClick(async () => {
+					const link_value = get_value(this.app, file)
+					await copy(link_value)
+				});
+			});
+		}));
+		this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor, view) => {
+			menu.addItem((item) => {
+				item.setTitle("\"Copy value : \" + key_meta").setIcon("paste-text").onClick(async () => {
+				const link_value = get_value(this.app, view.file)
+				await copy(link_value)
+				});
+			});
+		}));
 
-		// This adds a simple command that can be triggered anywhere
-		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
-			callback: () => {
-				new SampleModal(this.app).open();
-			}
-		});
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
+			id: 'obsidian-metacopy',
+			name: 'Metacopy',
 			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
+				const link_value = get_value(this.app, view.file)
+				copy(link_value)
 			}
 		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				let markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
 	}
 
-	onunload() {
-
+	async onunload() {
+		await this.saveSettings();
 	}
 
 	async loadSettings() {
@@ -89,26 +78,10 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
+class CopySettingsTabs extends PluginSettingTab {
+	plugin: MetaCopy;
 
-	onOpen() {
-		let {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		let {contentEl} = this;
-		contentEl.empty();
-	}
-}
-
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
-
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: MetaCopy) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -118,17 +91,16 @@ class SampleSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl('h2', {text: 'Settings for my awesome plugin.'});
+		containerEl.createEl('h2', {text: 'Metacopy Settings'});
 
 		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			.setName('Key')
+			.setDesc('The key which you want to copy the value')
 			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
+				.setPlaceholder('Enter the key you want to copy the value')
+				.setValue(this.plugin.settings.link)
 				.onChange(async (value) => {
-					console.log('Secret: ' + value);
-					this.plugin.settings.mySetting = value;
+					this.plugin.settings.link = value;
 					await this.plugin.saveSettings();
 				}));
 	}
