@@ -61,12 +61,14 @@ export default class MetaCopy extends Plugin {
 		}));
 
 		// This adds an editor command that can perform some operation on the current editor instance
+
 		this.addCommand({
 			id: 'obsidian-metacopy',
 			name: 'Metacopy',
+			hotkeys: [],
 			editorCallback: (editor: Editor, view: MarkdownView) => {
-				get_value(this.app, view.file)
-			}
+				get_value(this.app, view.file);
+			},
 		});
 	}
 
