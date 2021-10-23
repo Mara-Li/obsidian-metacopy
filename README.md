@@ -12,3 +12,5 @@ Yeah. That's it.
 
 Here the plugin in action : 
 ![](presentation.gif)
+
+The plugin is inspired by https://github.com/kometenstaub/copy-publish-url but for all link (instead of only publish).
