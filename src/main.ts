@@ -62,7 +62,7 @@ export default class MetaCopy extends Plugin {
 			menu.addItem((item) => {
 				const meta = get_meta(this.app, file, this.settings)
 				const key_meta=meta[1];
-				item.setTitle("Copy value : " + key_meta).setIcon("paste-text").onClick(async () => {
+				item.setTitle("Copy " + key_meta).setIcon("paste-text").onClick(async () => {
 					await get_value(this.app, file, this.settings)
 				});
 			});
@@ -73,7 +73,7 @@ export default class MetaCopy extends Plugin {
 			menu.addItem((item) => {
 				const meta = get_meta(this.app, view.file, this.settings)
 				const key_meta=meta[1];
-				item.setTitle("Copy value : " + key_meta).setIcon("paste-text").onClick(async () => {
+				item.setTitle("Copy " + key_meta).setIcon("paste-text").onClick(async () => {
 					await get_value(this.app, view.file, this.settings)
 				});
 			});
