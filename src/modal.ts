@@ -45,7 +45,6 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 
 	onChooseItem(item: CopyMetaModal, evt: MouseEvent | KeyboardEvent): void {
 		copy(item.value, item.key)
-
 	}
 
 }
