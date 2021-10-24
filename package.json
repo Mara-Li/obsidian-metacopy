@@ -1,12 +1,12 @@
 {
     "name": "obsidian-metacopy",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "This is a plugin that copy the value of a frontmatter key.",
     "main": "main.js",
     "scripts": {
         "dev": "esbuild src/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs --sourcemap=inline --watch",
         "build": "esbuild src/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs",
-		"release": "standard-version"
+        "release": "standard-version"
     },
     "standard-version": {
         "t": ""
@@ -20,7 +20,6 @@
         "obsidian": "^0.12.17",
         "standard-version": "^9.3.2",
         "tslib": "2.3.1",
-        "typescript": "4.4.4",
-    },
-
+        "typescript": "4.4.4"
+    }
 }

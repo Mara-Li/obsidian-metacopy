@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-metacopy",
 	"name": "Metacopy",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"minAppVersion": "0.12.0",
 	"description": "This is a plugin that copy the value of a frontmatter key.",
 	"author": "Mara",
