@@ -44,6 +44,10 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 	}
 
 	onChooseItem(item: CopyMetaModal, evt: MouseEvent | KeyboardEvent): void {
+		item.value = item.value.toString()
+		if (item.value.split(',').length > 1) {
+			item.value = "- " + item.value.replaceAll(',', '\n- ')
+		}
 		copy(item.value, item.key)
 	}
 

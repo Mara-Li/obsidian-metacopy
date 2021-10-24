@@ -6,7 +6,7 @@ export interface MetaCopySettings {
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
-	link: 'link'
+	link: ''
 }
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -27,7 +27,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Key')
 			.setDesc('The key which you want to copy the value')
-			.addText(text => text
+			.addTextArea(text => text
 				.setPlaceholder('key1, key2, key3,…')
 				.setValue(this.plugin.settings.link)
 				.onChange(async (value) => {
