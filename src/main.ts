@@ -74,7 +74,7 @@ export default class MetaCopy extends Plugin {
 			menu.addSeparator();
 			if(meta[0]) {
 				menu.addItem((item) => {
-					item.setTitle("Copy *" + key_meta + "*").setIcon("paste-text").onClick(async () => {
+					item.setTitle("Copy " + key_meta).setIcon("paste-text").onClick(async () => {
 						await get_value(this.app, view.file, this.settings)
 					});
 
