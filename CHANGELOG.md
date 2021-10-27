@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.13...0.0.14) (2021-10-27)
+
+
+### Features
+
+* :lipstic: :Update message for menu ([b691711](https://github.com/Mara-Li/obsidian-metacopy/commit/b691711c66dc4bb674b68a57c025bee1a04fd770))
+
 ### [0.0.13](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.12...0.0.13) (2021-10-24)
 
 
