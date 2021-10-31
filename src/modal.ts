@@ -12,7 +12,7 @@ function get_all_meta (app : App, file : TFile, settings: MetaCopySettings) {
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
 	const key_meta = settings.link;
 	let list_key = key_meta.split(',');
-	list_key =list_key.map(x  => x.trim())
+	list_key = list_key.map(x  => x.trim())
 	if (list_key.length > 0) {
 		for (let i = 0; i < list_key.length; i++) {
 			meta_value.push(frontmatter[list_key[i].trim()])
