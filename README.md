@@ -11,6 +11,6 @@ The value is added in your pasteboard, so you can paste it everywhere.
 Yeah. That's it.
 
 Here the plugin in action : 
-![](presentation.gif)
+![presentation.gif](presentation.gif)
 
-The plugin is inspired by https://github.com/kometenstaub/copy-publish-url but for all link (instead of only publish).
+The plugin is inspired by [Copy Publish URL](https://github.com/kometenstaub/copy-publish-url) but for all link (instead of only publish).
