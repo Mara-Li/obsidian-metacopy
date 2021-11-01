@@ -4,7 +4,7 @@ import {CopyMetaSuggester} from './modal';
 
 export async function copy(content: string, item: string) {
 	await navigator.clipboard.writeText(content)
-	new Notice("Copied " + item + " to clipboard");
+	new Notice("Metadata " + item + " copied to clipboard");
 }
 
 function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
@@ -34,7 +34,7 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 }
 
 
-export async function get_value(app: App, file: TFile, settings: MetaCopySettings) {
+	export async function getValue(app: App, file: TFile, settings: MetaCopySettings) {
 	const meta = getMeta(app, file, settings)
 	meta[0] = meta[0].toString()
 	if (meta[0].split(',').length > 1) {
@@ -61,7 +61,7 @@ export default class MetaCopy extends Plugin {
 						.setTitle("Copy [" + key_meta + "]")
 						.setIcon("paste-text")
 						.onClick(async () => {
-							await get_value(this.app, file, this.settings)
+							await getValue(this.app, file, this.settings)
 					});
 				})
 			}
@@ -81,7 +81,7 @@ export default class MetaCopy extends Plugin {
 							.setTitle("Copy [" + key_meta + "]")
 							.setIcon("paste-text")
 							.onClick(async () => {
-								await get_value(this.app, view.file, this.settings)
+								await getValue(this.app, view.file, this.settings)
 					});
 
 				});
@@ -95,12 +95,12 @@ export default class MetaCopy extends Plugin {
 			hotkeys: [],
 			checkCallback: (checking: boolean) => {
 				const file = this.app.workspace.getActiveFile();
-				let checkFile = false;
-				if (checking) {
-					checkFile = !!file && !!getMeta(this.app, file, this.settings)[0];
-					return checkFile;
+				if (!!file && !!getMeta(this.app, file, this.settings)[0]) {
+					if (!checking) {
+						new CopyMetaSuggester(this.app, this.settings, file).open();
+					}
 				}
-				new CopyMetaSuggester(this.app, this.settings, file).open();
+				return true;
 			},
 		});
 	}
