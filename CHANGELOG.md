@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.17](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.16...0.0.17) (2021-11-07)
+
+
+### Bug Fixes
+
+* **bug:** Fix bug with command ([719969d](https://github.com/Mara-Li/obsidian-metacopy/commit/719969dde7b9081444981b823327bcb05dd4bb0d))
+
 ### [0.0.16](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.15...0.0.16) (2021-11-01)
 
 
