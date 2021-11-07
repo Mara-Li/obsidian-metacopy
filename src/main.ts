@@ -8,9 +8,13 @@ export async function copy(content: string, item: string) {
 }
 
 function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
+	const meta = app.metadataCache.getCache(file.path);
+	if (!meta) {
+		return ['', ''];
+	}
+	const frontmatter = meta.frontmatter;
 	let link_value = '';
-	let meta_key = ''
+	let meta_key = '';
 	if (settings) {
 		const key_meta = settings.link.replace(' ', ',');
 		const list_key = key_meta.split(',')
@@ -32,10 +36,18 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	}
 	return [link_value, meta_key];
 }
+function checkMeta (app: App, settings: MetaCopySettings) {
+	const file = app.workspace.getActiveFile();
+	const meta = getMeta(app, file, settings)[0]
+	return !!file && !!meta;
+}
 
 
 	export async function getValue(app: App, file: TFile, settings: MetaCopySettings) {
 	const meta = getMeta(app, file, settings)
+	if (!meta) {
+		return false;
+	}
 	meta[0] = meta[0].toString()
 	if (meta[0].split(',').length > 1) {
 		meta[0] = "- " + meta[0].replaceAll(',', '\n- ')
@@ -54,6 +66,9 @@ export default class MetaCopy extends Plugin {
 		this.registerEvent(this.app.workspace.on("file-menu", (menu, file : TFile) => {
 			menu.addSeparator();
 			const meta = getMeta(this.app, file, this.settings)
+			if (!meta) {
+				return false;
+			}
 			const key_meta = meta[1];
 			if (meta[0]) {
 				menu.addItem((item) => {
@@ -72,6 +87,9 @@ export default class MetaCopy extends Plugin {
 
 		this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor, view) => {
 			const meta = getMeta(this.app, view.file, this.settings)
+			if (!meta) {
+				return false;
+			}
 			const key_meta = meta[1];
 			menu.addSeparator();
 			if (meta[0]) {
@@ -94,13 +112,14 @@ export default class MetaCopy extends Plugin {
 			name: 'Metacopy',
 			hotkeys: [],
 			checkCallback: (checking: boolean) => {
-				const file = this.app.workspace.getActiveFile();
-				if (!!file && !!getMeta(this.app, file, this.settings)[0]) {
+				let fileMeta = checkMeta(this.app, this.settings);
+				if (fileMeta) {
 					if (!checking) {
-						new CopyMetaSuggester(this.app, this.settings, file).open();
+						new CopyMetaSuggester(this.app, this.settings, this.app.workspace.getActiveFile()).open();
 					}
+					return true;
 				}
-				return true;
+				return false;
 			},
 		});
 	}
