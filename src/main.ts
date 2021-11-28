@@ -8,11 +8,11 @@ export async function copy(content: string, item: string) {
 }
 
 function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	const meta = app.metadataCache.getCache(file.path);
-	if (!meta) {
+    const fileCache = app.metadataCache.getFileCache(file);
+	const meta = fileCache?.frontmatter;
+	if (meta === undefined) {
 		return ['', ''];
 	}
-	const frontmatter = meta.frontmatter;
 	let link_value = '';
 	let meta_key = '';
 	if (settings) {
@@ -21,15 +21,15 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 		meta_key = key_meta
 		if (list_key.length > 1) {
 			for (let i = 0; i < list_key.length; i++) {
-				if (frontmatter[list_key[i]] !== undefined) {
-					link_value = frontmatter[list_key[i]];
+				if (meta[list_key[i]] !== undefined) {
+					link_value = meta[list_key[i]];
 					meta_key = list_key[i];
 					break;
 				}
 			}
 		} else {
-			if (frontmatter) {
-				link_value = frontmatter[list_key[0]];
+			{
+				link_value = meta[list_key[0]];
 				meta_key = list_key[0];
 			}
 		}
@@ -64,48 +64,27 @@ export default class MetaCopy extends Plugin {
 		this.addSettingTab(new CopySettingsTabs(this.app, this));
 
 		this.registerEvent(this.app.workspace.on("file-menu", (menu, file : TFile) => {
-			menu.addSeparator();
 			const meta = getMeta(this.app, file, this.settings)
+			console.log(meta)
 			if (!meta) {
 				return false;
 			}
 			const key_meta = meta[1];
 			if (meta[0]) {
+				menu.addSeparator();
 				menu.addItem((item) => {
 					item
 						.setTitle("Copy [" + key_meta + "]")
-						.setIcon("paste-text")
+						.setIcon("two-blank-pages")
 						.onClick(async () => {
 							await getValue(this.app, file, this.settings)
 					});
 				})
+				menu.addSeparator();
 			}
-			menu.addSeparator();
 
 		}));
 
-
-		this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor, view) => {
-			const meta = getMeta(this.app, view.file, this.settings)
-			if (!meta) {
-				return false;
-			}
-			const key_meta = meta[1];
-			menu.addSeparator();
-			if (meta[0]) {
-				menu
-					.addItem((item) => {
-						item
-							.setTitle("Copy [" + key_meta + "]")
-							.setIcon("paste-text")
-							.onClick(async () => {
-								await getValue(this.app, view.file, this.settings)
-					});
-
-				});
-			}
-			menu.addSeparator();
-		}));
 
 		this.addCommand({
 			id: 'obsidian-metacopy',
