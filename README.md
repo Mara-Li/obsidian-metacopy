@@ -14,3 +14,15 @@ Here the plugin in action :
 ![presentation.gif](presentation.gif)
 
 The plugin is inspired by [Copy Publish URL](https://github.com/kometenstaub/copy-publish-url) but for all link (instead of only publish).
+
+# 🖥️ Developpement
+- Fork / clone the repository
+- `npm install`
+- `npm run dev` (or `npm run build`)
+
+# Installation
+1. You can use [BRAT](https://github.com/TfTHacker/obsidian42-brat) with the link to the repository.
+2. You can use the community plugin registery. 
+3. You can manually install the plugin using [release](https://github.com/Mara-Li/obsidian-metacopy/releases) and unzip obsidian-metacopy-x.x.xx.zip in your `.obsidian/plugins` folder.
+
+
