@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.17...0.0.18) (2021-11-28)
+
+
+### Bug Fixes
+
+* Adjust frontmatter cache; remove editor menu ; Adjust icon ([f6a5f45](https://github.com/Mara-Li/obsidian-metacopy/commit/f6a5f45c04773ce7312ab0d24af97e1f8cd3cb5d))
+
 ### [0.0.17](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.16...0.0.17) (2021-11-07)
 
 
