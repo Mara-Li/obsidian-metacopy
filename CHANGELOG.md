@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.21](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.20...0.0.21) (2022-01-01)
+
+
+### Features
+
+* **menu:** Add a context menu (left-click) to copy url ([a817bf2](https://github.com/Mara-Li/obsidian-metacopy/commit/a817bf293b33d3ce7d53b6c17e03dc75a15744ab))
+
 ### [0.0.20](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.19...0.0.20) (2022-01-01)
 
 
