@@ -42,6 +42,18 @@ function checkMeta (app: App, settings: MetaCopySettings) {
 	return !!file && !!meta;
 }
 
+export function create_link (app: App, file: TFile, settings: MetaCopySettings, contents: string, meta_key: string) {
+	let url = contents;
+	if (settings){
+		const base_link = settings.base_link;
+		const key_link = settings.key_link;
+		if (meta_key == key_link) {
+			url = base_link + contents + '/' + file.name.replace('.md', '') + '/'
+			url = encodeURI(url)
+		}
+	}
+	return url;
+}
 
 	export async function getValue(app: App, file: TFile, settings: MetaCopySettings) {
 	const meta = getMeta(app, file, settings)
@@ -52,7 +64,8 @@ function checkMeta (app: App, settings: MetaCopySettings) {
 	if (meta[0].split(',').length > 1) {
 		meta[0] = "- " + meta[0].replaceAll(',', '\n- ')
 	}
-	await copy(meta[0], meta[1])
+	const contents = create_link(app, file, settings, meta[0], meta[1])
+	await copy(contents, meta[1])
 }
 
 export default class MetaCopy extends Plugin {
@@ -65,16 +78,19 @@ export default class MetaCopy extends Plugin {
 
 		this.registerEvent(this.app.workspace.on("file-menu", (menu, file : TFile) => {
 			const meta = getMeta(this.app, file, this.settings)
-			console.log(meta)
 			if (!meta) {
 				return false;
 			}
 			const key_meta = meta[1];
+			let title = "Copy [" + key_meta + "]"
+			if (key_meta == this.settings.key_link){
+				title = 'Create link'
+			}
 			if (meta[0]) {
 				menu.addSeparator();
 				menu.addItem((item) => {
 					item
-						.setTitle("Copy [" + key_meta + "]")
+						.setTitle(title)
 						.setIcon("two-blank-pages")
 						.onClick(async () => {
 							await getValue(this.app, file, this.settings)
