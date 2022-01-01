@@ -83,7 +83,7 @@ export default class MetaCopy extends Plugin {
 			}
 			const key_meta = meta[1];
 			let title = "Copy [" + key_meta + "]"
-			let icon = "two-blank-page"
+			let icon = "two-blank-pages"
 			if (key_meta == this.settings.key_link){
 				title = 'Copy URL'
 				icon = 'link'
@@ -103,6 +103,24 @@ export default class MetaCopy extends Plugin {
 
 		}));
 
+		this.registerEvent(
+			this.app.workspace.on("editor-menu", (menu, editor, view)  => {
+			const meta = getMeta(this.app, view.file, this.settings)
+			if (!meta) {
+				return false;
+			}
+			const key_meta = meta[1];
+			if (key_meta == this.settings.key_link) {
+				menu.addItem((item) => {
+					item
+						.setTitle("Copy URL")
+						.setIcon("link")
+						.onClick(async () => {
+							await getValue(this.app, view.file, this.settings)
+					});
+				})
+			}
+		}));
 
 		this.addCommand({
 			id: 'obsidian-metacopy',
