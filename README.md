@@ -13,7 +13,19 @@ Yeah. That's it.
 Here the plugin in action : 
 ![presentation.gif](presentation.gif)
 
+
+## Create link from frontmatter
+You can create a link using a frontmatter key. 
+1. The key must be both in `key` and in `key link`
+2. You need to configure the `base link` (note : don't forget the last `/` !)
+
+The link creation work as the main plugin : Context menu will take the first value, so if this value is the link key, it will create a link. 
+
+![link creation](link_creation.gif)
+
 The plugin is inspired by [Copy Publish URL](https://github.com/kometenstaub/copy-publish-url) but for all link (instead of only publish).
+
+Also, the plugin is recommended to be used with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish) to copy link without editing the source file. 
 
 # 🖥️ Developpement
 - Fork / clone the repository
