@@ -19,9 +19,13 @@ You can create a link using a frontmatter key.
 1. The key must be both in `key` and in `key link`
 2. You need to configure the `base link` (note : don't forget the last `/` !)
 
-The link creation work as the main plugin : Context menu will take the first value, so if this value is the link key, it will create a link. 
+The link creation work as the main plugin : file menu will take the first value, so if this value is the link key, it will create a link. 
 
 ![link creation](link_creation.gif)
+
+Also, the editor menu will add an option to copy the link if it exists. 
+
+---
 
 The plugin is inspired by [Copy Publish URL](https://github.com/kometenstaub/copy-publish-url) but for all link (instead of only publish).
 
