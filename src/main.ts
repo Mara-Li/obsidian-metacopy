@@ -83,15 +83,17 @@ export default class MetaCopy extends Plugin {
 			}
 			const key_meta = meta[1];
 			let title = "Copy [" + key_meta + "]"
+			let icon = "two-blank-page"
 			if (key_meta == this.settings.key_link){
-				title = 'Create link'
+				title = 'Copy URL'
+				icon = 'link'
 			}
 			if (meta[0]) {
 				menu.addSeparator();
 				menu.addItem((item) => {
 					item
 						.setTitle(title)
-						.setIcon("two-blank-pages")
+						.setIcon(icon)
 						.onClick(async () => {
 							await getValue(this.app, file, this.settings)
 					});
