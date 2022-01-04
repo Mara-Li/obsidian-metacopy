@@ -27,6 +27,16 @@ The link creation work as the main plugin : file menu will take the first value,
 
 Also, the editor menu will add an option to copy the link if it exists.
 
+### Folder note support
+
+You can enable the support of folder note (with the "folder name" comportment) to create link without the file's name if it's the same of the last folder of the link key.
+
+eg :
+- If you set `link_key: folder1/folder2/noteIndex`
+- If your file is named `noteIndex`
+- The result link will be : `https://www.github-page.io/yourpage/folder1/folder2/noteIndex/`
+
+
 ## Disable menu
 
 You can disable the menu using a front matter key. There are two
