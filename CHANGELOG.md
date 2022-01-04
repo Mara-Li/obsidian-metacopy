@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.23](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.22...0.0.23) (2022-01-04)
 
-
 ### Bug Fixes
 
-* **editorMenu:** Add separator ([fe5476e](https://github.com/Mara-Li/obsidian-metacopy/commit/fe5476e81285fd3198996bf4941f86a8ca50037c))
+-   **editorMenu:** Add separator ([fe5476e](https://github.com/Mara-Li/obsidian-metacopy/commit/fe5476e81285fd3198996bf4941f86a8ca50037c))
 
 ### [0.0.22](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.21...0.0.22) (2022-01-04)
 

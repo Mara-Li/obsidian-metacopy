@@ -68,7 +68,7 @@ export function createLink(
 	metaKey: string
 ) {
 	let url = contents;
-	let folder = contents.replace(/\/$/, '').split('/').slice(-1)[0]
+	let folder = contents.replace(/\/$/, "").split("/").slice(-1)[0];
 	if (settings) {
 		const baseLink = settings.baseLink;
 		const keyLink = settings.keyLink;
@@ -80,7 +80,7 @@ export function createLink(
 			} else {
 				fileName = "/" + fileName + "/";
 			}
-			url = baseLink + contents.replace(/\/$/, '') + fileName;
+			url = baseLink + contents.replace(/\/$/, "") + fileName;
 			url = encodeURI(url);
 		}
 	}
