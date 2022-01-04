@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.24](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.23...0.0.24) (2022-01-04)
+
+
+### Features
+
+* **url:** Support foldernote ([7f8725b](https://github.com/Mara-Li/obsidian-metacopy/commit/7f8725b116162874a1c2fd95960851ceae592518))
+
 ### [0.0.23](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.22...0.0.23) (2022-01-04)
 
 ### Bug Fixes
