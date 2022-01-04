@@ -1,6 +1,6 @@
-import {App, FuzzySuggestModal, TFile} from "obsidian";
-import {MetaCopySettings} from "./settings";
-import {copy, createLink} from "./main";
+import { App, FuzzySuggestModal, TFile } from "obsidian";
+import { MetaCopySettings } from "./settings";
+import { copy, createLink } from "./main";
 
 interface CopyMetaModal {
 	key: string;

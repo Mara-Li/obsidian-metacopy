@@ -50,9 +50,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 			.setDesc("The base of the link")
 			.addText((text) =>
 				text
-					.setPlaceholder(
-						"https://obsidian-file.github.io/"
-					)
+					.setPlaceholder("https://obsidian-file.github.io/")
 					.setValue(this.plugin.settings.baseLink)
 					.onChange(async (value) => {
 						this.plugin.settings.baseLink = value;
@@ -73,31 +71,32 @@ export class CopySettingsTabs extends PluginSettingTab {
 			);
 		containerEl.createEl("h3", { text: "Disable MetaCopy" });
 		containerEl.createEl("p", {
-			text:
-				"Disable Metacopy context menu with a frontmatter key"
+			text: "Disable Metacopy context menu with a frontmatter key",
 		});
 		new Setting(containerEl)
-			.setName('Comportement')
-			.setDesc('Enable force to have the key to active metacopy' +
-				' file menu.')
+			.setName("Comportement")
+			.setDesc(
+				"Enable force to have the key to active metacopy" +
+					" file menu."
+			)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.comport);
 				toggle.onChange(async (value) => {
 					this.plugin.settings.comport = value;
 					await this.plugin.saveSettings();
-				})
-			})
+				});
+			});
 		new Setting(containerEl)
-			.setName('Disabled Key')
-			.setDesc('Key used to disable/enable Metacopy file menu')
+			.setName("Disabled Key")
+			.setDesc("Key used to disable/enable Metacopy file menu")
 			.addText((text) =>
 				text
-					.setPlaceholder('')
+					.setPlaceholder("")
 					.setValue(this.plugin.settings.disableKey)
-					.onChange(async (value)=> {
+					.onChange(async (value) => {
 						this.plugin.settings.disableKey = value;
 						await this.plugin.saveSettings();
 					})
-			)
+			);
 	}
 }

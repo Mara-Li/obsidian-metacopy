@@ -27,17 +27,18 @@ The link creation work as the main plugin : file menu will take the first value,
 
 Also, the editor menu will add an option to copy the link if it exists.
 
-## Disable menu 
+## Disable menu
 
 You can disable the menu using a front matter key. There are two
 comportments :
-1. Setting is enabled :
-	The key must be present **and** set to **true** to **enable** the menu.
-2. Setting is disabled:
-	The default comportment. 
-	The key must be absent **or** set to **false** to **disable** the menu. 
 
-Regardless of the option, the command modal continue to work. 
+1. Setting is enabled :
+   The key must be present **and** set to **true** to **enable** the menu.
+2. Setting is disabled:
+   The default comportment.
+   The key must be absent **or** set to **false** to **disable** the menu.
+
+Regardless of the option, the command modal continue to work.
 
 ---
 
@@ -56,5 +57,3 @@ Also, the plugin is recommended to be used with [Obsidian To Mkdocs](https://git
 1. You can use [BRAT](https://github.com/TfTHacker/obsidian42-brat) with the link to the repository.
 2. You can use the community plugin registry.
 3. Likewise, you can manually install the plugin using [release](https://github.com/Mara-Li/obsidian-metacopy/releases) and unzip obsidian-metacopy-x.x.xx.zip in your `.obsidian/plugins` folder.
-
-
