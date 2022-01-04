@@ -88,10 +88,9 @@ export class CopySettingsTabs extends PluginSettingTab {
 			text: "Disable Metacopy context menu with a frontmatter key",
 		});
 		new Setting(containerEl)
-			.setName("Comportement")
+			.setName("Menu behavior")
 			.setDesc(
-				"Enable force to have the key to active metacopy" +
-					" file menu."
+				"Enable : require a configured key to enable the menu"
 			)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.comport);
@@ -101,7 +100,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 				});
 			});
 		new Setting(containerEl)
-			.setName("Disabled Key")
+			.setName("Key menu")
 			.setDesc("Key used to disable/enable Metacopy file menu")
 			.addText((text) =>
 				text
