@@ -7,6 +7,7 @@ export interface MetaCopySettings {
 	keyLink: string;
 	comport: boolean;
 	disableKey: string;
+	folderNote: boolean;
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
@@ -15,6 +16,7 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	keyLink: "",
 	comport: false,
 	disableKey: "",
+	folderNote: false,
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -69,6 +71,18 @@ export class CopySettingsTabs extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					})
 			);
+		new Setting(containerEl)
+			.setName("Folder Note")
+			.setDesc(
+				"if file name = key link, remove the file name in the" + " link"
+			)
+			.addToggle((toggle) => {
+				toggle.setValue(this.plugin.settings.folderNote);
+				toggle.onChange(async (value) => {
+					this.plugin.settings.folderNote = value;
+					await this.plugin.saveSettings();
+				});
+			});
 		containerEl.createEl("h3", { text: "Disable MetaCopy" });
 		containerEl.createEl("p", {
 			text: "Disable Metacopy context menu with a frontmatter key",

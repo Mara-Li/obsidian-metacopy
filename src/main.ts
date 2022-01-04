@@ -32,10 +32,8 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 				}
 			}
 		} else {
-			{
-				linkValue = meta[listKey[0]];
-				metaKey = listKey[0];
-			}
+			linkValue = meta[listKey[0]];
+			metaKey = listKey[0];
 		}
 	}
 	return [linkValue, metaKey];
@@ -52,11 +50,11 @@ function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
 	const meta = fileCache?.frontmatter;
 	if (toggle) {
 		/* toggle : true ⇒ Disable on all file unless there is the key */
-		if (meta == undefined) {
+		if (meta === undefined) {
 			return false; /* Disable Metacopy */
 		} else return !!meta[settings.disableKey];
 	} else {
-		if (meta == undefined) {
+		if (meta === undefined) {
 			return false; /* Disable Meta Copy ; there is no frontmatter... */
 		} else return !meta[settings.disableKey];
 	}
@@ -70,12 +68,19 @@ export function createLink(
 	metaKey: string
 ) {
 	let url = contents;
+	let folder = contents.replace(/\/$/, '').split('/').slice(-1)[0]
 	if (settings) {
 		const baseLink = settings.baseLink;
 		const keyLink = settings.keyLink;
-		if (metaKey == keyLink) {
-			url =
-				baseLink + contents + "/" + file.name.replace(".md", "") + "/";
+		const folderNote = settings.folderNote;
+		let fileName = file.name.replace(".md", "");
+		if (metaKey === keyLink) {
+			if (fileName === folder && folderNote) {
+				fileName = "/";
+			} else {
+				fileName = "/" + fileName + "/";
+			}
+			url = baseLink + contents.replace(/\/$/, '') + fileName;
 			url = encodeURI(url);
 		}
 	}
@@ -116,7 +121,7 @@ export default class MetaCopy extends Plugin {
 				const keyMeta = meta[1];
 				let title = "Copy [" + keyMeta + "]";
 				let icon = "two-blank-pages";
-				if (keyMeta == this.settings.keyLink) {
+				if (keyMeta === this.settings.keyLink) {
 					title = "Copy URL";
 					icon = "link";
 				}
@@ -151,7 +156,7 @@ export default class MetaCopy extends Plugin {
 					this.settings,
 					view.file
 				);
-				if (keyMeta == this.settings.keyLink && enableMetaCopy) {
+				if (keyMeta === this.settings.keyLink && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setTitle("Copy URL")
@@ -174,7 +179,7 @@ export default class MetaCopy extends Plugin {
 			name: "Metacopy",
 			hotkeys: [],
 			checkCallback: (checking: boolean) => {
-				let fileMeta = checkMeta(this.app, this.settings);
+				const fileMeta = checkMeta(this.app, this.settings);
 				if (fileMeta) {
 					if (!checking) {
 						new CopyMetaSuggester(
