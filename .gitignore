@@ -15,3 +15,8 @@ main.js
 
 # obsidian
 data.json
+
+#prettierignore
+
+.prettierignore
+.prettierrc.json
