@@ -1,136 +1,178 @@
-import {App, Notice, Plugin, TFile} from 'obsidian';
-import {CopySettingsTabs, DEFAULT_SETTINGS, MetaCopySettings} from './settings';
-import {CopyMetaSuggester} from './modal';
+import { App, Notice, Plugin, TFile } from "obsidian";
+import {
+	CopySettingsTabs,
+	DEFAULT_SETTINGS,
+	MetaCopySettings,
+} from "./settings";
+import { CopyMetaSuggester } from "./modal";
 
 export async function copy(content: string, item: string) {
-	await navigator.clipboard.writeText(content)
+	await navigator.clipboard.writeText(content);
 	new Notice("Metadata " + item + " copied to clipboard");
 }
 
 function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
-    const fileCache = app.metadataCache.getFileCache(file);
+	const fileCache = app.metadataCache.getFileCache(file);
 	const meta = fileCache?.frontmatter;
 	if (meta === undefined) {
-		return ['', ''];
+		return ["", ""];
 	}
-	let link_value = '';
-	let meta_key = '';
+	let linkValue = "";
+	let metaKey = "";
 	if (settings) {
-		const key_meta = settings.link.replace(' ', ',');
-		const list_key = key_meta.split(',')
-		meta_key = key_meta
-		if (list_key.length > 1) {
-			for (let i = 0; i < list_key.length; i++) {
-				if (meta[list_key[i]] !== undefined) {
-					link_value = meta[list_key[i]];
-					meta_key = list_key[i];
+		const keyMeta = settings.link.replace(" ", ",");
+		const listKey = keyMeta.split(",");
+		metaKey = keyMeta;
+		if (listKey.length > 1) {
+			for (let i = 0; i < listKey.length; i++) {
+				if (meta[listKey[i]] !== undefined) {
+					linkValue = meta[listKey[i]];
+					metaKey = listKey[i];
 					break;
 				}
 			}
 		} else {
 			{
-				link_value = meta[list_key[0]];
-				meta_key = list_key[0];
+				linkValue = meta[listKey[0]];
+				metaKey = listKey[0];
 			}
 		}
 	}
-	return [link_value, meta_key];
+	return [linkValue, metaKey];
 }
-function checkMeta (app: App, settings: MetaCopySettings) {
+function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
-	const meta = getMeta(app, file, settings)[0]
+	const meta = getMeta(app, file, settings)[0];
 	return !!file && !!meta;
 }
 
-export function create_link (app: App, file: TFile, settings: MetaCopySettings, contents: string, meta_key: string) {
+function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
+	const toggle = settings.comport;
+	const fileCache = app.metadataCache.getFileCache(file);
+	const meta = fileCache?.frontmatter;
+	if (toggle) {
+		/* toggle : true ⇒ Disable on all file unless there is the key */
+		if (meta == undefined) {
+			return false /* Disable Metacopy */
+		} else return !!meta[settings.disableKey];
+	} else {
+		if (meta == undefined) {
+			return false /* Disable Meta Copy ; there is no frontmatter... */
+		} else return !meta[settings.disableKey];
+	}
+}
+
+export function createLink(
+	app: App,
+	file: TFile,
+	settings: MetaCopySettings,
+	contents: string,
+	metaKey: string
+) {
 	let url = contents;
-	if (settings){
-		const base_link = settings.base_link;
-		const key_link = settings.key_link;
-		if (meta_key == key_link) {
-			url = base_link + contents + '/' + file.name.replace('.md', '') + '/'
-			url = encodeURI(url)
+	if (settings) {
+		const baseLink = settings.baseLink;
+		const keyLink = settings.keyLink;
+		if (metaKey == keyLink) {
+			url =
+				baseLink + contents + "/" + file.name.replace(".md", "") + "/";
+			url = encodeURI(url);
 		}
 	}
 	return url;
 }
 
-	export async function getValue(app: App, file: TFile, settings: MetaCopySettings) {
-	const meta = getMeta(app, file, settings)
+export async function getValue(
+	app: App,
+	file: TFile,
+	settings: MetaCopySettings
+) {
+	const meta = getMeta(app, file, settings);
 	if (!meta) {
 		return false;
 	}
-	meta[0] = meta[0].toString()
-	if (meta[0].split(',').length > 1) {
-		meta[0] = "- " + meta[0].replaceAll(',', '\n- ')
+	meta[0] = meta[0].toString();
+	if (meta[0].split(",").length > 1) {
+		meta[0] = "- " + meta[0].replaceAll(",", "\n- ");
 	}
-	const contents = create_link(app, file, settings, meta[0], meta[1])
-	await copy(contents, meta[1])
+	const contents = createLink(app, file, settings, meta[0], meta[1]);
+	await copy(contents, meta[1]);
 }
 
 export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
+
 
 	async onload() {
 		console.log("MetaCopy loaded");
 		await this.loadSettings();
 		this.addSettingTab(new CopySettingsTabs(this.app, this));
 
-		this.registerEvent(this.app.workspace.on("file-menu", (menu, file : TFile) => {
-			const meta = getMeta(this.app, file, this.settings)
-			if (!meta) {
-				return false;
-			}
-			const key_meta = meta[1];
-			let title = "Copy [" + key_meta + "]"
-			let icon = "two-blank-pages"
-			if (key_meta == this.settings.key_link){
-				title = 'Copy URL'
-				icon = 'link'
-			}
-			if (meta[0]) {
-				menu.addSeparator();
-				menu.addItem((item) => {
-					item
-						.setTitle(title)
-						.setIcon(icon)
-						.onClick(async () => {
-							await getValue(this.app, file, this.settings)
+		this.registerEvent(
+			this.app.workspace.on("file-menu", (menu, file: TFile) => {
+				const meta = getMeta(this.app, file, this.settings);
+				if (!meta) {
+					return false;
+				}
+				const keyMeta = meta[1];
+				let title = "Copy [" + keyMeta + "]";
+				let icon = "two-blank-pages";
+				if (keyMeta == this.settings.keyLink) {
+					title = "Copy URL";
+					icon = "link";
+				}
+				const enableMetaCopy = disableMetaCopy(this.app, this.settings, file);
+				if (meta[0] && enableMetaCopy) {
+					menu.addSeparator();
+					menu.addItem((item) => {
+						item.setTitle(title)
+							.setIcon(icon)
+							.onClick(async () => {
+								await getValue(this.app, file, this.settings);
+							});
 					});
-				})
-				menu.addSeparator();
-			}
-
-		}));
+					menu.addSeparator();
+				}
+			})
+		);
 
 		this.registerEvent(
-			this.app.workspace.on("editor-menu", (menu, editor, view)  => {
-			const meta = getMeta(this.app, view.file, this.settings)
-			if (!meta) {
-				return false;
-			}
-			const key_meta = meta[1];
-			if (key_meta == this.settings.key_link) {
-				menu.addItem((item) => {
-					item
-						.setTitle("Copy URL")
-						.setIcon("link")
-						.onClick(async () => {
-							await getValue(this.app, view.file, this.settings)
+			this.app.workspace.on("editor-menu", (menu, editor, view) => {
+				const meta = getMeta(this.app, view.file, this.settings);
+				if (!meta) {
+					return false;
+				}
+				const keyMeta = meta[1];
+				const enableMetaCopy = disableMetaCopy(this.app, this.settings, view.file);
+				if (keyMeta == this.settings.keyLink && enableMetaCopy) {
+					menu.addItem((item) => {
+						item.setTitle("Copy URL")
+							.setIcon("link")
+							.onClick(async () => {
+								await getValue(
+									this.app,
+									view.file,
+									this.settings
+								);
+							});
 					});
-				})
-			}
-		}));
+				}
+			})
+		);
 
 		this.addCommand({
-			id: 'obsidian-metacopy',
-			name: 'Metacopy',
+			id: "obsidian-metacopy",
+			name: "Metacopy",
 			hotkeys: [],
 			checkCallback: (checking: boolean) => {
 				let fileMeta = checkMeta(this.app, this.settings);
 				if (fileMeta) {
 					if (!checking) {
-						new CopyMetaSuggester(this.app, this.settings, this.app.workspace.getActiveFile()).open();
+						new CopyMetaSuggester(
+							this.app,
+							this.settings,
+							this.app.workspace.getActiveFile()
+						).open();
 					}
 					return true;
 				}
@@ -139,17 +181,19 @@ export default class MetaCopy extends Plugin {
 		});
 	}
 
-
 	async onunload() {
 		console.log("MetaCopy unloaded");
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
 }
-

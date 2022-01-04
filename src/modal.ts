@@ -1,25 +1,27 @@
 import {App, FuzzySuggestModal, TFile} from "obsidian";
-import {MetaCopySettings} from './settings';
-import {copy, create_link} from './main';
+import {MetaCopySettings} from "./settings";
+import {copy, createLink} from "./main";
 
 interface CopyMetaModal {
 	key: string;
 	value: string;
 }
 
-function get_all_meta (app : App, file : TFile, settings: MetaCopySettings) {
-	let meta_value: any[] =[];
+function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
+	let metaValue: any[] = [];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
-	const key_meta = settings.link;
-	let list_key = key_meta.split(',');
-	list_key = list_key.map(x  => x.trim())
-	if (list_key.length > 0) {
-		for (let i = 0; i < list_key.length; i++) {
-			meta_value.push(frontmatter[list_key[i].trim()])
+	const keyMeta = settings.link;
+	let listKey = keyMeta.split(",");
+	listKey = listKey.map((x) => x.trim());
+	if (listKey.length > 0) {
+		for (let i = 0; i < listKey.length; i++) {
+			metaValue.push(frontmatter[listKey[i].trim()]);
 		}
 	}
-	const interfaced= list_key.map((key, i)  => ({key, value: meta_value[i]}));
-	return (interfaced)
+	return listKey.map((key, i) => ({
+		key,
+		value: metaValue[i],
+	}));
 }
 
 export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
@@ -33,23 +35,26 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 		this.settings = settings;
 	}
 
-
 	getItemText(item: CopyMetaModal): string {
 		return item.key;
 	}
 
 	getItems(): CopyMetaModal[] {
-		const interfaced = get_all_meta(this.app, this.file, this.settings);
-		return interfaced;
+		return getAllMeta(this.app, this.file, this.settings);
 	}
 
 	onChooseItem(item: CopyMetaModal, evt: MouseEvent | KeyboardEvent): void {
-		item.value = item.value.toString()
-		if (item.value.split(',').length > 1) {
-			item.value = "- " + item.value.replaceAll(',', '\n- ')
+		item.value = item.value.toString();
+		if (item.value.split(",").length > 1) {
+			item.value = "- " + item.value.replaceAll(",", "\n- ");
 		}
-		const contents = create_link(this.app, this.file, this.settings, item.value, item.key)
-		copy(contents, item.key)
+		const contents = createLink(
+			this.app,
+			this.file,
+			this.settings,
+			item.value,
+			item.key
+		);
+		copy(contents, item.key);
 	}
-
 }
