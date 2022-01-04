@@ -53,11 +53,11 @@ function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
 	if (toggle) {
 		/* toggle : true ⇒ Disable on all file unless there is the key */
 		if (meta == undefined) {
-			return false /* Disable Metacopy */
+			return false; /* Disable Metacopy */
 		} else return !!meta[settings.disableKey];
 	} else {
 		if (meta == undefined) {
-			return false /* Disable Meta Copy ; there is no frontmatter... */
+			return false; /* Disable Meta Copy ; there is no frontmatter... */
 		} else return !meta[settings.disableKey];
 	}
 }
@@ -102,7 +102,6 @@ export async function getValue(
 export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
 
-
 	async onload() {
 		console.log("MetaCopy loaded");
 		await this.loadSettings();
@@ -121,7 +120,11 @@ export default class MetaCopy extends Plugin {
 					title = "Copy URL";
 					icon = "link";
 				}
-				const enableMetaCopy = disableMetaCopy(this.app, this.settings, file);
+				const enableMetaCopy = disableMetaCopy(
+					this.app,
+					this.settings,
+					file
+				);
 				if (meta[0] && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
@@ -143,8 +146,13 @@ export default class MetaCopy extends Plugin {
 					return false;
 				}
 				const keyMeta = meta[1];
-				const enableMetaCopy = disableMetaCopy(this.app, this.settings, view.file);
+				const enableMetaCopy = disableMetaCopy(
+					this.app,
+					this.settings,
+					view.file
+				);
 				if (keyMeta == this.settings.keyLink && enableMetaCopy) {
+					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setTitle("Copy URL")
 							.setIcon("link")
@@ -156,6 +164,7 @@ export default class MetaCopy extends Plugin {
 								);
 							});
 					});
+					menu.addSeparator();
 				}
 			})
 		);
