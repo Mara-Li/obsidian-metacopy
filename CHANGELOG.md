@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.22](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.21...0.0.22) (2022-01-04)
+
+
+### Features
+
+* **option:** Disable/enable plugin based on a frontmatter key ([ed85cb2](https://github.com/Mara-Li/obsidian-metacopy/commit/ed85cb2547eca93fdeb95b96c9f882ef4bbb5241))
+
 ### [0.0.21](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.20...0.0.21) (2022-01-01)
 
 
