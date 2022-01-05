@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.26](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.25...0.0.26) (2022-01-05)
+
+
+### Bug Fixes
+
+* **url:** Fix url creation ([04b3783](https://github.com/Mara-Li/obsidian-metacopy/commit/04b378358c77b96390fba83cc62b4b0171215c97))
+
 ### [0.0.25](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.24...0.0.25) (2022-01-04)
 
 ### [0.0.24](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.23...0.0.24) (2022-01-04)
