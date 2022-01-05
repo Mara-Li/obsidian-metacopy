@@ -60,6 +60,19 @@ function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
 	}
 }
 
+function checkSlash(
+	link: string
+) {
+	let slash = link.match(/\/*$/)
+	if (slash[0].length > 1) {
+		link = link.replace(/\/*$/, '')
+		link = link + '/'
+	} else if (slash[0].length === 0) {
+		link = link + '/'
+	}
+	return link
+}
+
 export function createLink(
 	app: App,
 	file: TFile,
@@ -68,9 +81,11 @@ export function createLink(
 	metaKey: string
 ) {
 	let url = contents;
-	let folder = contents.replace(/\/$/, "").split("/").slice(-1)[0];
+	const folderPath = checkSlash(contents).replace(/(^\/|\/$)/, "");
+	let folder = folderPath.split("/").slice(-1)[0];
 	if (settings) {
-		const baseLink = settings.baseLink;
+		let baseLink = settings.baseLink;
+		baseLink = checkSlash(baseLink)
 		const keyLink = settings.keyLink;
 		const folderNote = settings.folderNote;
 		let fileName = file.name.replace(".md", "");
@@ -80,7 +95,7 @@ export function createLink(
 			} else {
 				fileName = "/" + fileName + "/";
 			}
-			url = baseLink + contents.replace(/\/$/, "") + fileName;
+			url = baseLink + folderPath + fileName;
 			url = encodeURI(url);
 		}
 	}
