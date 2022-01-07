@@ -64,11 +64,8 @@ function checkSlash(
 	link: string
 ) {
 	let slash = link.match(/\/*$/)
-	if (slash[0].length > 1) {
-		link = link.replace(/\/*$/, '')
-		link = link + '/'
-	} else if (slash[0].length === 0) {
-		link = link + '/'
+	if (slash[0].length != 1) {
+		link = link.replace(/\/*$/, '') + '/'
 	}
 	return link
 }
