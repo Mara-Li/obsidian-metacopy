@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import {App, PluginSettingTab, Setting} from "obsidian";
 import MetaCopy from "./main";
 
 export interface MetaCopySettings {
@@ -8,6 +8,7 @@ export interface MetaCopySettings {
 	comport: boolean;
 	disableKey: string;
 	folderNote: boolean;
+	defaultKeyLink: string
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
@@ -17,6 +18,7 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	comport: false,
 	disableKey: "",
 	folderNote: false,
+	defaultKeyLink: "",
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -71,6 +73,19 @@ export class CopySettingsTabs extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					})
 			);
+		new Setting(containerEl)
+			.setName('Default value')
+			.setDesc('If you want to active the link creation without the' +
+				' key set.')
+			.addText((text) =>
+				text
+					.setPlaceholder('')
+					.setValue(this.plugin.settings.defaultKeyLink)
+					.onChange(async (value) => {
+						this.plugin.settings.defaultKeyLink = value;
+						await this.plugin.saveSettings();
+					}))
+		
 		new Setting(containerEl)
 			.setName("Folder Note")
 			.setDesc(

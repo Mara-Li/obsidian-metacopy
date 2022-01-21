@@ -1,10 +1,10 @@
-import { App, Notice, Plugin, TFile } from "obsidian";
+import {App, Notice, Plugin, TFile} from "obsidian";
 import {
 	CopySettingsTabs,
 	DEFAULT_SETTINGS,
 	MetaCopySettings,
 } from "./settings";
-import { CopyMetaSuggester } from "./modal";
+import {CopyMetaSuggester} from "./modal";
 
 export async function copy(content: string, item: string) {
 	await navigator.clipboard.writeText(content);
@@ -20,14 +20,14 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	let linkValue = "";
 	let metaKey = "";
 	if (settings) {
-		const keyMeta = settings.link.replace(" ", ",");
-		const listKey = keyMeta.split(",");
+		const keyMeta = settings.link.replace(' ', ',').replace(',,', ',')
+		const listKey = keyMeta.split(',');
 		metaKey = keyMeta;
 		if (listKey.length > 1) {
 			for (let i = 0; i < listKey.length; i++) {
 				if (meta[listKey[i]] !== undefined) {
-					linkValue = meta[listKey[i]];
-					metaKey = listKey[i];
+					linkValue = meta[listKey[i]].trim();
+					metaKey = listKey[i].trim();
 					break;
 				}
 			}
@@ -36,15 +36,23 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 			metaKey = listKey[0];
 		}
 	}
-	return [linkValue, metaKey];
+	let metaKeys = [linkValue, metaKey];
+	if (!linkValue && settings.defaultKeyLink) {
+		return [settings.defaultKeyLink, 'DefaultKey']
+	}
+	return metaKeys
 }
 function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
-	const meta = getMeta(app, file, settings)[0];
-	return !!file && !!meta;
+	const meta = getMeta(app, file, settings);
+	let checkKey = false
+	if (meta[1] != 'DefaultKey') {
+		checkKey = true
+	}
+	return !!file && checkKey;
 }
 
-function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
+export function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFile) {
 	const toggle = settings.comport;
 	const fileCache = app.metadataCache.getFileCache(file);
 	const meta = fileCache?.frontmatter;
@@ -86,7 +94,7 @@ export function createLink(
 		const keyLink = settings.keyLink;
 		const folderNote = settings.folderNote;
 		let fileName = file.name.replace(".md", "");
-		if (metaKey === keyLink) {
+		if ((metaKey === keyLink) || (metaKey == "DefaultKey") || (metaKey == 'Copy link')) {
 			if (fileName === folder && folderNote) {
 				fileName = "/";
 			} else {
@@ -133,15 +141,16 @@ export default class MetaCopy extends Plugin {
 				const keyMeta = meta[1];
 				let title = "Copy [" + keyMeta + "]";
 				let icon = "two-blank-pages";
-				if (keyMeta === this.settings.keyLink) {
-					title = "Copy URL";
-					icon = "link";
-				}
 				const enableMetaCopy = disableMetaCopy(
 					this.app,
 					this.settings,
 					file
 				);
+				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
+					title = "Copy URL";
+					icon = "link";
+				}
+				
 				if (meta[0] && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
@@ -168,7 +177,7 @@ export default class MetaCopy extends Plugin {
 					this.settings,
 					view.file
 				);
-				if (keyMeta === this.settings.keyLink && enableMetaCopy) {
+				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setTitle("Copy URL")

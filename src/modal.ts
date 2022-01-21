@@ -1,6 +1,6 @@
-import { App, FuzzySuggestModal, TFile } from "obsidian";
-import { MetaCopySettings } from "./settings";
-import { copy, createLink } from "./main";
+import {App, FuzzySuggestModal, TFile} from "obsidian";
+import {MetaCopySettings} from "./settings";
+import {copy, createLink, disableMetaCopy} from "./main";
 
 interface CopyMetaModal {
 	key: string;
@@ -10,18 +10,38 @@ interface CopyMetaModal {
 function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	let metaValue: any[] = [];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
-	const keyMeta = settings.link;
+	const keyMeta = settings.link.replace(' ', ',').replace(',,', ',');
 	let listKey = keyMeta.split(",");
 	listKey = listKey.map((x) => x.trim());
 	if (listKey.length > 0) {
 		for (let i = 0; i < listKey.length; i++) {
-			metaValue.push(frontmatter[listKey[i].trim()]);
+			if (frontmatter[listKey[i]]) {
+				metaValue.push(frontmatter[listKey[i].trim()]);
+			}
 		}
 	}
-	return listKey.map((key, i) => ({
+	let mappedListKey = listKey.map((key, i) => ({
 		key,
 		value: metaValue[i],
 	}));
+	mappedListKey = JSON.parse(JSON.stringify(mappedListKey))
+	Object.entries(mappedListKey).forEach(([k, v]) => {
+		if (v.value === undefined) {
+			mappedListKey.remove(v)
+		}
+	})
+	const enableMetaCopy = disableMetaCopy(
+		app,
+		settings,
+		file
+		);
+	if (enableMetaCopy && settings.defaultKeyLink) {
+		mappedListKey[mappedListKey.length] = {
+			key: 'Copy link',
+			value: settings.defaultKeyLink
+		}
+	}
+	return mappedListKey;
 }
 
 export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
