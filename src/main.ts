@@ -8,7 +8,12 @@ import {CopyMetaSuggester} from "./modal";
 
 export async function copy(content: string, item: string) {
 	await navigator.clipboard.writeText(content);
-	new Notice("Metadata " + item + " copied to clipboard");
+	let message = "Metadata " + item + " copied to clipboard";
+	if (item == "DefaultKey" || item == this.settings.keyLink) {
+		message = 'Metacopy URL send to clipboard'
+	}
+		new Notice(message);
+
 }
 
 function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
