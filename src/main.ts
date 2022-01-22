@@ -20,7 +20,7 @@ function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	let linkValue = "";
 	let metaKey = "";
 	if (settings) {
-		const keyMeta = settings.link.replace(' ', ',').replace(',,', ',')
+		const keyMeta = settings.copyKey.replace(' ', ',').replace(',,', ',')
 		const listKey = keyMeta.split(',');
 		metaKey = keyMeta;
 		if (listKey.length > 1) {

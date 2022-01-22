@@ -10,7 +10,7 @@ interface CopyMetaModal {
 function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	let metaValue: any[] = [];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
-	const keyMeta = settings.link.replace(' ', ',').replace(',,', ',');
+	const keyMeta = settings.copyKey.replace(' ', ',').replace(',,', ',');
 	let listKey = keyMeta.split(",");
 	listKey = listKey.map((x) => x.trim());
 	if (listKey.length > 0) {

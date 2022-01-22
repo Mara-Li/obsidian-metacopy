@@ -2,7 +2,7 @@ import {App, PluginSettingTab, Setting} from "obsidian";
 import MetaCopy from "./main";
 
 export interface MetaCopySettings {
-	link: string;
+	copyKey: string;
 	baseLink: string;
 	keyLink: string;
 	comport: boolean;
@@ -12,7 +12,7 @@ export interface MetaCopySettings {
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
-	link: "",
+	copyKey: "",
 	baseLink: "",
 	keyLink: "",
 	comport: false,
@@ -42,9 +42,9 @@ export class CopySettingsTabs extends PluginSettingTab {
 			.addTextArea((text) =>
 				text
 					.setPlaceholder("key1, key2, key3,…")
-					.setValue(this.plugin.settings.link)
+					.setValue(this.plugin.settings.copyKey)
 					.onChange(async (value) => {
-						this.plugin.settings.link = value;
+						this.plugin.settings.copyKey = value;
 						await this.plugin.saveSettings();
 					})
 			);
@@ -100,7 +100,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 			});
 		containerEl.createEl("h3", { text: "Disable MetaCopy" });
 		containerEl.createEl("p", {
-			text: "Disable Metacopy context menu with a frontmatter key",
+			text: "Disable Metacopy context menu with a frontmatter key\n" +
+				" Also disable Metacopy creation link in modal.",
 		});
 		new Setting(containerEl)
 			.setName("Menu behavior")
