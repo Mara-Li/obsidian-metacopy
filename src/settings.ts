@@ -100,8 +100,10 @@ export class CopySettingsTabs extends PluginSettingTab {
 			});
 		containerEl.createEl("h3", { text: "Disable MetaCopy" });
 		containerEl.createEl("p", {
-			text: "Disable Metacopy context menu with a frontmatter key\n" +
-				" Also disable Metacopy creation link in modal.",
+			text: "Disable Metacopy context menu with a frontmatter key."
+		});
+		containerEl.createEl("p", {
+			text: "Also disable the URL creation in command modal."
 		});
 		new Setting(containerEl)
 			.setName("Menu behavior")
