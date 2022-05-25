@@ -4,8 +4,8 @@
 	"description": "This is a plugin that copy the value of a frontmatter key.",
 	"main": "main.js",
 	"scripts": {
-		"dev": "esbuild src/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs --sourcemap=inline --watch",
-		"build": "esbuild src/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs",
+		"dev": "esbuild obsidian-metacopy/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs --sourcemap=inline --watch",
+		"build": "esbuild obsidian-metacopy/main.ts --bundle --external:obsidian --outdir=.  --target=es2016 --format=cjs",
 		"release": "standard-version"
 	},
 	"standard-version": {
@@ -16,7 +16,10 @@
 	"license": "AGPL-3.0",
 	"devDependencies": {
 		"@types/node": "^16.11.1",
+		"@typescript-eslint/eslint-plugin": "^5.26.0",
+		"@typescript-eslint/parser": "^5.26.0",
 		"esbuild": "0.13.8",
+		"eslint": "^8.16.0",
 		"obsidian": "^0.12.17",
 		"prettier": "2.5.1",
 		"standard-version": "^9.3.2",
