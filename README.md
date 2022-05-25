@@ -1,4 +1,5 @@
-This plugin is recommanded to be used with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish).
+This plugin recommended being used
+with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish).
 
 # Obsidian — MetaCopy
 
@@ -9,57 +10,96 @@ If the plugin found multiple key in the front matter :
 1. The context takes the **first** value from the front matter.
 2. The command creates a menu where you can choose the value you want.
 
-The value is added in your pasteboard, so you can paste it everywhere.
+The value added in your pasteboard, so you can paste it everywhere.
 
 Yeah. That's it.
 
 Here is the plugin in action :
 ![presentation.gif](docs/presentation.gif)
 
-## Create link from front matter
+# Links creator
+
+## Base options
+
+If you want to create a link to a page, you can use this plugin.
+
+> ⚠️ This function only work if you have a frontmatter.
+
+There are 3 possibles configuration :
+
+- Creating link using a default folder
+- Creating link using the base link **plus** the relative obsidian path
+- Creating the link using a frontmatter key.
+
+### Fixed folder
+
+The resulted link will be `{your_base_link}/{default_folder}/{filename}/`.
+
+> 💭 Folder note option is disabled with this option.
+
+### Obsidian Path option
+
+The resulted link will be : `{your_base_link}/{obsidian_path}/{filename}/`.
+
+### Frontmatter
 
 You can create a link using a front matter key.
 
 1. The key must be both in `key` and in `key link`
 2. You need to configure the `base link`
 
-The link creation work as the main plugin : file menu will take the first value, so if this value is the link key, it will create a link.
+The link creator works as the main plugin : file menu will take the first value,
+so if this value is the link key, it will create a link.
+
+You can also set a `default value`, that will be a fallback in case of the
+absence of a `category` key & value.
 
 ![link creation](docs/link_creation.gif)
 
-Also, the editor menu will add an option to copy the link if it exists.
+Furthermore, the editor menu will add an option to copy the link if it exists.
 
-### Folder note support
+## Folder note support
 
-You can enable the support of folder note (with the "folder name" comportment) to create link without the file's name if it's the same of the last folder of the link key.
+You can enable the support of folder note (with the “folder name” behavior) to
+create link without the file's name if it's the same of the last folder of the
+link key.
 
-eg :
-- If you set `link_key: folder1/folder2/noteIndex`
-- If your file is named `noteIndex`
-- The result link will be : `https://www.github-page.io/yourpage/folder1/folder2/noteIndex/`
+> ️🗒️ Example : <u>Obsidian Path</u>
+> - If you set as `default value` : `docs`
+> - If your file is named `noteIndex` and their folder `myFolder`
+> - The link will be `{your_base_link}/{obsidian_path}/docs/myFolder/`
 
+> 🗒️ Example : <u>Frontmatter</u>
+> - If you set `link_key: folder1/folder2/noteIndex`
+> - If your file is named `noteIndex`
+> - The result link will be : `{base_link}/folder1/folder2/noteIndex/`
+
+> ⚠️ This option is not compatible with the `Fixed Folder` option.
 
 ## Disable menu
 
-You can disable the menu using a front matter key. There are two behavior :
+You can disable the menu using a front matter key. There are two behaviors :
 
-1. Setting is enabled :
+1. Settings enabled :
    The key must be present **and** set to **true** to **enable** the menu.
 2. Setting is disabled:
-   The default comportment.
+   The default behavior.
    The key must be absent **or** set to **false** to **disable** the menu.
 
 Regardless of the option, the command modal continue to work.
 
 # Obsidian Mkdocs
 
-Also, the plugin is recommended to be used with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish) to copy link without editing the source file.
+Furthermore, the plugin recommended being used
+with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish) to
+copy link without editing the source file.
 
-To use Obsidian2mkdocs with Metacopy, here is the configuration : 
+To use Obsidian2mkdocs with Metacopy, here is the configuration :
 ![](docs/metacopy3.png)
 ![](docs/metacopy2.png)
 
-This template allow to copy a link as you will do with Notion or Google Docs (for example). 
+This template allows copying a link, as you will do with Notion or Google Docs (
+for example).
 
 The file template will be :
 ```yaml
@@ -77,9 +117,9 @@ The plugin is inspired by [Copy Publish URL](https://github.com/kometenstaub/cop
 
 # 🖥️ Development
 
--   Fork / clone the repository
--   `npm install`
--   `npm run dev` (or `npm run build`)
+- Fork / clone the repository
+- `npm install`
+- `npm run dev` (or `npm run build`)
 
 # Installation
 
