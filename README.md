@@ -1,6 +1,5 @@
 This plugin recommended being used
 with [Obsidian To Mkdocs](https://github.com/Mara-Li/mkdocs_obsidian_publish).
-
 # Obsidian — MetaCopy
 
 The purpose of this plugin is to get quickly the value of a front matter key. You can set multiple value in settings, as : `key1, key2, key3, ...`
