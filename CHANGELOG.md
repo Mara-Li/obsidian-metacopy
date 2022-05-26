@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/Mara-Li/obsidian-metacopy/compare/1.1.0...1.1.1) (2022-05-26)
+
+
+### Bug Fixes
+
+* fix folder name && workflow ([50310f5](https://github.com/Mara-Li/obsidian-metacopy/commit/50310f58e66d04cb7eefea51f18ecdd5e81005a6))
+* resolve main.ts & files doesn't exist because of renaming folder ([c708a43](https://github.com/Mara-Li/obsidian-metacopy/commit/c708a43b6d809e7974b44480986dcf2fab1f220f))
+
 ## [1.1.0](https://github.com/Mara-Li/obsidian-metacopy/compare/1.0.2...1.1.0) (2022-05-25)
 
 
