@@ -1,4 +1,4 @@
-import {App, Notice, Plugin, TFile} from "obsidian";
+import {addIcon, App, Notice, Plugin, TFile} from "obsidian";
 import {
 	CopySettingsTabs,
 	DEFAULT_SETTINGS,
@@ -32,13 +32,14 @@ export default class MetaCopy extends Plugin {
 					file
 				);
 				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
-					title = "Copy URL";
-					icon = "link";
+					title = "MetaCopy URL";
+					icon = "price-tag-glyph";
 				}
 
 				if (meta[0] && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
+						item.setSection("info");
 						item.setTitle(title)
 							.setIcon(icon)
 							.onClick(async () => {
@@ -65,8 +66,9 @@ export default class MetaCopy extends Plugin {
 				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
-						item.setTitle("Copy URL")
-							.setIcon("link")
+						item.setSection("info");
+						item.setTitle("MetaCopy URL")
+							.setIcon("price-tag-glyph")
 							.onClick(async () => {
 								await getValue(
 									this.app,
