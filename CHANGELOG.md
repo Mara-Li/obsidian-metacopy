@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Mara-Li/obsidian-metacopy/compare/1.1.1...1.2.0) (2022-06-28)
+
+
+### Features
+
+* adding section using obsidian 0.15.3 ([4ebe3fd](https://github.com/Mara-Li/obsidian-metacopy/commit/4ebe3fd139e4be13f4deb30150a4a53f5e9ec2d6))
+
 ### [1.1.1](https://github.com/Mara-Li/obsidian-metacopy/compare/1.1.0...1.1.1) (2022-05-26)
 
 
