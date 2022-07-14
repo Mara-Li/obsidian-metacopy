@@ -34,12 +34,16 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 		if (item.value.split(",").length > 1) {
 			item.value = "- " + item.value.replaceAll(",", "\n- ");
 		}
-		const contents = createLink(
-			this.file,
-			this.settings,
-			item.value,
-			item.key
-		);
-		copy(contents, item.key);
+		let contents = item.value;
+		if (item.key === "Copy link") {
+			contents = createLink(
+				this.file,
+				this.settings,
+				item.value,
+				item.key
+			);
+		}
+		
+		copy(contents, item.key, this.settings);
 	}
 }

@@ -45,9 +45,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
 	let checkKey = false;
-	if (meta.metaKey != "DefaultKey") {
-		checkKey = true;
-	}
+	checkKey = meta?.metaKey === "DefaultKey" || meta?.metaKey === "Copy link";
 	return !!file && checkKey;
 }
 

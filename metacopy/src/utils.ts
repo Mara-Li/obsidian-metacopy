@@ -57,12 +57,12 @@ export async function getValue(
 	if (!meta) {
 		return false;
 	}
-	meta.linkValue = meta.linkValue.toString();
-	if (meta.linkValue.split(",").length > 1) {
-		meta.linkValue = "- " + meta.linkValue.replaceAll(",", "\n- ");
+	let value = meta.linkValue.toString();
+	if (value.split(",").length > 1) {
+		value = "- " + value.replaceAll(",", "\n- ");
 	}
 	const linkValue = createLink(file, settings, meta.linkValue, meta.metaKey);
-	await copy(linkValue, meta.metaKey);
+	await copy(linkValue, meta.metaKey, settings);
 }
 
 export function checkSlash(
@@ -75,10 +75,10 @@ export function checkSlash(
 	return link;
 }
 
-export async function copy(content: string, item: string) {
+export async function copy(content: string, item: string, settings: MetaCopySettings) {
 	await navigator.clipboard.writeText(content);
 	let message = "Metadata " + item + " copied to clipboard";
-	if (item == "DefaultKey" || item == this.settings.keyLink) {
+	if (item == "DefaultKey" || item == settings.keyLink) {
 		message = "Metacopy URL send to clipboard";
 	}
 	new Notice(message);
