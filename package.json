@@ -20,7 +20,7 @@
 		"@typescript-eslint/parser": "^5.26.0",
 		"esbuild": "0.13.8",
 		"eslint": "^8.16.0",
-		"obsidian": "latest",
+		"obsidian": "^0.15.4",
 		"prettier": "2.5.1",
 		"standard-version": "^9.3.2",
 		"tslib": "2.3.1",
