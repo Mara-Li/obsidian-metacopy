@@ -23,7 +23,7 @@ export default class MetaCopy extends Plugin {
 				if (!meta) {
 					return false;
 				}
-				const keyMeta = meta[1];
+				const keyMeta = meta.metaKey;
 				let title = "Copy [" + keyMeta + "]";
 				let icon = "two-blank-pages";
 				const enableMetaCopy = disableMetaCopy(
@@ -36,7 +36,7 @@ export default class MetaCopy extends Plugin {
 					icon = "price-tag-glyph";
 				}
 
-				if (meta[0] && enableMetaCopy) {
+				if (meta.linkValue && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setSection("info");
@@ -57,7 +57,7 @@ export default class MetaCopy extends Plugin {
 				if (!meta) {
 					return false;
 				}
-				const keyMeta = meta[1];
+				const keyMeta = meta.metaKey;
 				const enableMetaCopy = disableMetaCopy(
 					this.app,
 					this.settings,

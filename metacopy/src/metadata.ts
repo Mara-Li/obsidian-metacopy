@@ -7,7 +7,7 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	const fileCache = app.metadataCache.getFileCache(file);
 	const meta = fileCache?.frontmatter;
 	if (meta === undefined) {
-		return ["", ""];
+		return null;
 	}
 	let linkValue = "";
 	let metaKey = "";
@@ -28,10 +28,16 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 			metaKey = listKey[0];
 		}
 	}
-	const metaKeys = [linkValue, metaKey];
+	const metaKeys = {
+		'linkValue' : linkValue,
+		'metaKey' : metaKey
+	};
 	if (!linkValue && settings.defaultKeyLink) {
-		return [settings.defaultKeyLink, "DefaultKey"];
-	}
+		return {
+			'linkValue' : settings.defaultKeyLink,
+			'metaKey' : "DefaultKey"
+		};
+	};
 	return metaKeys;
 }
 
@@ -39,7 +45,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
 	let checkKey = false;
-	if (meta[1] != "DefaultKey") {
+	if (meta.metaKey != "DefaultKey") {
 		checkKey = true;
 	}
 	return !!file && checkKey;

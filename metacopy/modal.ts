@@ -35,7 +35,6 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 			item.value = "- " + item.value.replaceAll(",", "\n- ");
 		}
 		const contents = createLink(
-			this.app,
 			this.file,
 			this.settings,
 			item.value,
