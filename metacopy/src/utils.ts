@@ -1,24 +1,31 @@
-import {App, TFile, Notice} from "obsidian";
-import {MetaCopySettings} from "../settings";
+import {App, TFile, Notice, TFolder} from "obsidian";
+import {MetaCopySettings, metaCopyValue} from "../settings";
 import {getMeta} from "./metadata";
+import t, {StringFunc} from "../i18n";
 
 export function createLink(
 	file: TFile,
 	settings: MetaCopySettings,
-	linkValue: string,
-	metaKey: string
+	metaCopy: metaCopyValue,
+	app: App,
 ) {
-	let url = linkValue;
-	const folderPath = checkSlash(linkValue).replace(/(^\/|\/$)/, "");
+	let url = metaCopy.value;
+	const folderPath = checkSlash(url).replace(/(^\/|\/$)/, "");
 	const folder = folderPath.split("/").slice(-1)[0];
 	if (settings) {
 		let baseLink = settings.baseLink;
 		baseLink = checkSlash(baseLink);
 		const folderNote = settings.folderNote;
 		let fileName = file.name.replace(".md", "");
+		if (settings.useFrontMatterTitle) {
+			const meta = app.metadataCache.getFileCache(file)?.frontmatter;
+			if (meta && meta["title"] && meta["title"] !== file.name) {
+				fileName = meta["title"];
+			}
+		}
 		if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
-			if ((metaKey === keyLink) || (metaKey == "DefaultKey") || (metaKey == "Copy link")) {
+			if ((metaCopy.key === keyLink) || (metaCopy.key == "DefaultKey") || (metaCopy.key == "Copy link")) {
 				if (fileName === folder && folderNote) {
 					fileName = "/";
 				} else {
@@ -27,20 +34,25 @@ export function createLink(
 				url = baseLink + folderPath + fileName;
 				url = encodeURI(url);
 			}
-		} else if (settings.behaviourLinkCreator === 'obsidianPath') {
-			const folderPath = file.parent.path.replace(/\/$/, '');
+		} else if (settings.behaviourLinkCreator === "obsidianPath") {
+			const folderPath = file.parent.path.replace(/\/$/, "");
 			let filename = file.name.replace(".md", "");
-			if (filename === file.parent.name && folderNote) {
-				filename = '/';
+			if (
+				(filename === file.parent.name && folderNote) 
+				|| 
+				(folderNote 
+					&& app.vault.getAbstractFileByPath(file.path.replace(".md", ""))
+					&& app.vault.getAbstractFileByPath(file.path.replace(".md", "")) instanceof TFolder)) {
+				filename = "/";
 			} else if (file.parent.isRoot()) {
-				filename = filename + '/';
+				filename = filename + "/";
 			} else {
 				filename = "/" + filename + "/";
 			}
-			url = baseLink + settings.defaultKeyLink.replace(/\/$/, '') + '/' + folderPath + filename;
+			url = baseLink + settings.defaultKeyLink.replace(/\/$/, "") + "/" + folderPath + filename;
 			url = encodeURI(url);
 		} else {
-			url = baseLink + settings.defaultKeyLink + '/' + file.name.replace(".md", "") + '/';
+			url = baseLink + settings.defaultKeyLink + "/" + file.name.replace(".md", "") + "/";
 			url = encodeURI(url);
 		}
 
@@ -57,12 +69,13 @@ export async function getValue(
 	if (!meta) {
 		return false;
 	}
-	let value = meta.linkValue.toString();
+	let value = meta.value.toString();
 	if (value.split(",").length > 1) {
 		value = "- " + value.replaceAll(",", "\n- ");
 	}
-	const linkValue = createLink(file, settings, meta.linkValue, meta.metaKey);
-	await copy(linkValue, meta.metaKey, settings);
+	const metaCopyValue = {key: meta.key, value: meta.value};
+	const linkValue = createLink(file, settings, metaCopyValue, app);
+	await copy(linkValue, meta.key, settings);
 }
 
 export function checkSlash(
@@ -78,8 +91,9 @@ export function checkSlash(
 export async function copy(content: string, item: string, settings: MetaCopySettings) {
 	await navigator.clipboard.writeText(content);
 	let message = "Metadata " + item + " copied to clipboard";
+	message = (t("metadataMessage") as StringFunc)(item);
 	if (item == "DefaultKey" || item == settings.keyLink) {
-		message = "Metacopy URL send to clipboard";
+		message = t("metadataMessageURL") as string;
 	}
 	new Notice(message);
 }

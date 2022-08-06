@@ -1,11 +1,10 @@
 import {App, TFile} from "obsidian";
-import {MetaCopySettings} from "../settings";
+import {MetaCopySettings, metaCopyValue} from "../settings";
 import {disableMetaCopy} from "./pluginBehavior";
 
 
-export function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	const fileCache = app.metadataCache.getFileCache(file);
-	const meta = fileCache?.frontmatter;
+export function getMeta(app: App, file: TFile, settings: MetaCopySettings): metaCopyValue {
+	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
 	if (meta === undefined) {
 		return null;
 	}
@@ -29,15 +28,16 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings) {
 		}
 	}
 	const metaKeys = {
-		'linkValue' : linkValue,
-		'metaKey' : metaKey
+		key: metaKey,
+		value: linkValue
 	};
 	if (!linkValue && settings.defaultKeyLink) {
 		return {
-			'linkValue' : settings.defaultKeyLink,
-			'metaKey' : "DefaultKey"
+			key : "DefaultKey",
+			value : settings.defaultKeyLink,
+
 		};
-	};
+	}
 	return metaKeys;
 }
 
@@ -45,7 +45,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
 	let checkKey = false;
-	checkKey = meta?.metaKey === "DefaultKey" || meta?.metaKey === "Copy link";
+	checkKey = meta?.key === "DefaultKey" || meta?.key === "Copy link";
 	return !!file && checkKey;
 }
 

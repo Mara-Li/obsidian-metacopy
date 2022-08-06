@@ -1,11 +1,11 @@
-import {addIcon, App, Notice, Plugin, TFile} from "obsidian";
+import {Plugin, TFile} from "obsidian";
 import {
 	CopySettingsTabs,
 	DEFAULT_SETTINGS,
 	MetaCopySettings,
 } from "./settings";
 import {CopyMetaSuggester} from "./modal";
-import {getValue} from "./src/utils"
+import {getValue} from "./src/utils";
 import {getMeta, checkMeta} from "./src/metadata";
 import {disableMetaCopy} from "./src/pluginBehavior";
 
@@ -23,7 +23,7 @@ export default class MetaCopy extends Plugin {
 				if (!meta) {
 					return false;
 				}
-				const keyMeta = meta.metaKey;
+				const keyMeta = meta.key;
 				let title = "Copy [" + keyMeta + "]";
 				let icon = "two-blank-pages";
 				const enableMetaCopy = disableMetaCopy(
@@ -36,7 +36,7 @@ export default class MetaCopy extends Plugin {
 					icon = "price-tag-glyph";
 				}
 
-				if (meta.linkValue && enableMetaCopy) {
+				if (meta.value && enableMetaCopy) {
 					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setSection("info");
@@ -57,7 +57,7 @@ export default class MetaCopy extends Plugin {
 				if (!meta) {
 					return false;
 				}
-				const keyMeta = meta.metaKey;
+				const keyMeta = meta.key;
 				const enableMetaCopy = disableMetaCopy(
 					this.app,
 					this.settings,

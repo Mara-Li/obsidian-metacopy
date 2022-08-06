@@ -1,4 +1,5 @@
 import {App, PluginSettingTab, Setting} from "obsidian";
+import t from "./i18n";
 import MetaCopy from "./main";
 
 export interface MetaCopySettings {
@@ -10,6 +11,13 @@ export interface MetaCopySettings {
 	folderNote: boolean;
 	defaultKeyLink: string;
 	behaviourLinkCreator: string;
+	useFrontMatterTitle: boolean;
+}
+
+export interface metaCopyValue
+{
+	key: string;
+	value: string;
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
@@ -21,6 +29,7 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	folderNote: false,
 	defaultKeyLink: "",
 	behaviourLinkCreator: "categoryKey",
+	useFrontMatterTitle: false
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -49,24 +58,24 @@ export class CopySettingsTabs extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h2", {text: "Metacopy Settings"});
+		containerEl.createEl("h2", {text: t("metaCopySettings") as string});
 
 		new Setting(containerEl)
-			.setName("Key")
-			.setDesc("The key which you want to copy the value")
+			.setName(t("keyTitleSetting") as string)
+			.setDesc(t("keyTitleDesc") as string)
 			.addTextArea((text) =>
 				text
-					.setPlaceholder("key1, key2, key3,…")
+					.setPlaceholder(t("keyTitlePlaceholder") as string)
 					.setValue(this.plugin.settings.copyKey)
 					.onChange(async (value) => {
 						this.plugin.settings.copyKey = value;
 						await this.plugin.saveSettings();
 					})
 			);
-		containerEl.createEl("h3", {text: "Link creator"});
+		containerEl.createEl("h3", {text: (t("linkCreatorHeader") as string)});
 		new Setting(containerEl)
-			.setName("Base link")
-			.setDesc("The base of the link")
+			.setName(t("baseLink") as string)
+			.setDesc(t("baseLinkDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("https://obsidian-file.github.io/")
@@ -78,15 +87,14 @@ export class CopySettingsTabs extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName("Default behavior")
-			.setDesc("Choose between a metadata key, obsidian path & fixed" +
-				" folder for the link creator")
+			.setName(t("defaultBehavior") as string)
+			.setDesc(t("defaultBehaviorDesc") as string)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
-						fixedFolder: "Fixed Folder",
-						categoryKey: "Metadata Key",
-						obsidianPath: "Obsidian Path",
+						fixedFolder: t("fixedFolder") as string,
+						categoryKey: t("categoryKey") as string,
+						obsidianPath: t("obsidianPath") as string,
 					})
 					.setValue(this.plugin.settings.behaviourLinkCreator)
 					.onChange(async (value) => {
@@ -98,14 +106,14 @@ export class CopySettingsTabs extends PluginSettingTab {
 							hideSettings(keyLinkSettings);
 						} else {
 							hideSettings(keyLinkSettings);
-							showSettings(folderNoteSettings)
+							showSettings(folderNoteSettings);
 						}
 						await this.plugin.saveSettings();
 					}));
 
 		const keyLinkSettings = new Setting(containerEl)
-			.setName("key link")
-			.setDesc("The key to create as link")
+			.setName(t("keyLink") as string)
+			.setDesc(t("keyLinkDesc") as string)
 			.setClass("metacopy-settings")
 			.addText((text) =>
 				text
@@ -124,9 +132,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName("Default value")
-			.setDesc("If you want to active the link creation without the" +
-				" key set.")
+			.setName(t("defaultValue") as string)
+			.setDesc(t("defaultValueDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("")
@@ -137,12 +144,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 					}));
 
 		const folderNoteSettings = new Setting(containerEl)
-			.setName("Folder Note")
-			.setDesc(
-				"if file name = key link or parent folder, remove the file" +
-				" name" +
-				" in the" + " link"
-			)
+			.setName(t("folderNote") as string)
+			.setDesc(t("folderNoteDesc") as string)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.folderNote);
 				toggle.onChange(async (value) => {
@@ -151,24 +154,33 @@ export class CopySettingsTabs extends PluginSettingTab {
 				});
 			});
 
-		if (this.plugin.settings.behaviourLinkCreator === 'fixedFolder') {
+		new Setting(containerEl)
+			.setName(t("useFrontMatterTitle") as string)
+			.setDesc(t("useFrontMatterTitleDesc") as string)
+			.addToggle((toggle) => {
+				toggle.setValue(this.plugin.settings.useFrontMatterTitle);
+				toggle.onChange(async (value) => {
+					this.plugin.settings.useFrontMatterTitle = value;
+					await this.plugin.saveSettings();
+				});
+			});
+
+		if (this.plugin.settings.behaviourLinkCreator === "fixedFolder") {
 			hideSettings(folderNoteSettings);
 		} else {
 			showSettings(folderNoteSettings);
 		}
 
-		containerEl.createEl("h3", {text: "Disable MetaCopy"});
+		containerEl.createEl("h3", {text: t("disableMetaCopy") as string});
 		containerEl.createEl("p", {
-			text: "Disable Metacopy context menu with a frontmatter key."
+			text: t("disableMetaCopyDesc") as string,
 		});
 		containerEl.createEl("p", {
-			text: "Also disable the URL creation in command modal."
+			text: t("disableMetaCopyDescURL") as string,
 		});
 		new Setting(containerEl)
-			.setName("Menu behavior")
-			.setDesc(
-				"Enable : require a configured key to enable the menu"
-			)
+			.setName(t("menuBehavior") as string)
+			.setDesc(t("menuBehaviorDesc") as string)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.comport);
 				toggle.onChange(async (value) => {
@@ -177,8 +189,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 				});
 			});
 		new Setting(containerEl)
-			.setName("Key menu")
-			.setDesc("Key used to disable/enable Metacopy file menu")
+			.setName(t("keyMenu") as string)
+			.setDesc(t("keyMenuDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("")
