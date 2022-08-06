@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Mara-Li/obsidian-metacopy/compare/1.2.2...1.3.0) (2022-08-06)
+
+
+### Features
+
+* translation + adding support for "title" field instead of filename ([1132728](https://github.com/Mara-Li/obsidian-metacopy/commit/1132728596677981a9bb27f10ad1edcf3ca5dc13))
+
 ### [1.2.2](https://github.com/Mara-Li/obsidian-metacopy/compare/1.2.1...1.2.2) (2022-07-14)
 
 

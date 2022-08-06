@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-metacopy",
 	"name": "Metacopy",
-	"version": "1.2.2",
+	"version": "1.3.0",
 	"minAppVersion": "0.15.3",
 	"description": "This is a plugin that copy the value of a frontmatter key and allowing to create link using various settings.",
 	"author": "Mara",
