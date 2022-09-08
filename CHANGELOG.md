@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.3.0...1.4.0) (2022-09-08)
+
+
+### Features
+
+* specify a frontmatter key for the title creation ([80ebbae](https://github.com/Lisandra-dev/obsidian-metacopy/commit/80ebbaeb48f1f04d3a731a583a4b153baa75178a))
+
 ## [1.3.0](https://github.com/Mara-Li/obsidian-metacopy/compare/1.2.2...1.3.0) (2022-08-06)
 
 
