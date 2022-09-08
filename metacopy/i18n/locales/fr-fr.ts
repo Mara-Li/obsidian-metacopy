@@ -25,8 +25,8 @@ export default {
 	menuBehaviorDesc: "Activer : nécessite une clé configurée pour activer le menu",
 	keyMenu: "Clé du menu",
 	keyMenuDesc: "La clé utilisée pour désactiver/activer le menu du fichier Metacopy.",
-	useFrontMatterTitle: "Utiliser la clé de métadonnée \"title\"",
-	useFrontMatterTitleDesc: "Utiliser la clé de métadonnée \"title\" (au lieu du nom du fichier) pour créer le lien.",
+	useFrontMatterTitle: "Utiliser une clé frontmatter pour le titre",
+	useFrontMatterTitleDesc: "Utiliser une clé de métadonnée en tant que titre (au lieu du nom du fichier) pour créer le lien.",
 	metadataMessage: (key: string): string => `Clé de métadonnée "${key}" copiée dans le presse-papier`,
 	metadataMessageURL: "URL envoyé dans le presse-papier"
 };

@@ -12,6 +12,7 @@ export interface MetaCopySettings {
 	defaultKeyLink: string;
 	behaviourLinkCreator: string;
 	useFrontMatterTitle: boolean;
+	frontmattertitleKey: string;
 }
 
 export interface metaCopyValue
@@ -29,7 +30,8 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	folderNote: false,
 	defaultKeyLink: "",
 	behaviourLinkCreator: "categoryKey",
-	useFrontMatterTitle: false
+	useFrontMatterTitle: false,
+	frontmattertitleKey: "title"
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -154,7 +156,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 				});
 			});
 
-		new Setting(containerEl)
+		const titleSettings = new Setting(containerEl)
 			.setName(t("useFrontMatterTitle") as string)
 			.setDesc(t("useFrontMatterTitleDesc") as string)
 			.addToggle((toggle) => {
@@ -162,8 +164,21 @@ export class CopySettingsTabs extends PluginSettingTab {
 				toggle.onChange(async (value) => {
 					this.plugin.settings.useFrontMatterTitle = value;
 					await this.plugin.saveSettings();
+					this.display();
 				});
 			});
+		if (this.plugin.settings.useFrontMatterTitle) {
+			titleSettings
+				.addText((text) => {
+					text
+						.setPlaceholder("title")
+						.setValue(this.plugin.settings.frontmattertitleKey)
+						.onChange(async (value) => {
+							this.plugin.settings.frontmattertitleKey = value.trim();
+							await this.plugin.saveSettings();
+						})
+				})
+		}
 
 		if (this.plugin.settings.behaviourLinkCreator === "fixedFolder") {
 			hideSettings(folderNoteSettings);

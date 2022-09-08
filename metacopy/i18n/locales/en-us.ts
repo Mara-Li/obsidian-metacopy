@@ -25,8 +25,8 @@ export default {
 	menuBehaviorDesc: "Enable : require a configured key to enable the menu",
 	keyMenu: "Key menu",
 	keyMenuDesc: "The key used to disable/enable the metacopy file menu",
-	useFrontMatterTitle: "Use frontmatter title",
-	useFrontMatterTitleDesc: "Use frontmatter \"title\" field instead of the file name.",
+	useFrontMatterTitle: "Use frontmatter key as title",
+	useFrontMatterTitleDesc: "Use a frontmatter field instead of the file name.",
 	metadataMessage: (key: string): string => `Metadata key "${key}" copied to the clipboard.`,
 	metadataMessageURL: "URL send to the clipboard."
 };
