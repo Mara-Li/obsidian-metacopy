@@ -44,14 +44,15 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): meta
 export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
-	let checkKey = false;
-	checkKey = meta?.key === "DefaultKey" || meta?.key === "Copy link";
+	const checkKey = meta?.key === "DefaultKey" || meta?.key === "Copy link";
 	return !!file && checkKey;
 }
 
 
 export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	const metaValue: any[] = [];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	const metaValue: any[]=[];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
 	const keyMeta = settings.copyKey.replace(" ", ",").replace(",,", ",");
 	let listKey = keyMeta.split(",");
@@ -68,7 +69,7 @@ export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 		value: metaValue[i],
 	}));
 	mappedListKey = JSON.parse(JSON.stringify(mappedListKey));
-	Object.entries(mappedListKey).forEach(([k, v]) => {
+	Object.entries(mappedListKey).forEach(([, v]) => {
 		if (v.value === undefined) {
 			mappedListKey.remove(v);
 		}
