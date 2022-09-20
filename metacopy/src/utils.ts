@@ -19,8 +19,8 @@ export function createLink(
 		let fileName = file.name.replace(".md", "");
 		if (settings.useFrontMatterTitle) {
 			const meta = app.metadataCache.getFileCache(file)?.frontmatter;
-			if (meta && meta["title"] && meta["title"] !== file.name) {
-				fileName = meta["title"];
+			if (meta && meta[settings.frontmattertitleKey] && meta[settings.frontmattertitleKey] !== file.name) {
+				fileName = meta[settings.frontmattertitleKey];
 			}
 		}
 		if (settings.behaviourLinkCreator === "categoryKey") {

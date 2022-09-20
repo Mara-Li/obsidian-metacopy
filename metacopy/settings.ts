@@ -176,8 +176,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 						.onChange(async (value) => {
 							this.plugin.settings.frontmattertitleKey = value.trim();
 							await this.plugin.saveSettings();
-						})
-				})
+						});
+				});
 		}
 
 		if (this.plugin.settings.behaviourLinkCreator === "fixedFolder") {
