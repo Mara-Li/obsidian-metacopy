@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.4.0...1.6.0) (2022-11-26)
+
+
+### Features
+
+* adding "baselinks" key option to change baselink for perfile settings ([5b00349](https://github.com/Lisandra-dev/obsidian-metacopy/commit/5b003491b59dcbda8183e20f0727f545c012dc71))
+* specify a frontmatter key for the title creation ([00677ef](https://github.com/Lisandra-dev/obsidian-metacopy/commit/00677ef746da7035284bc3e2a57c87a2308db1c2))
+
 ## [1.5.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.4.0...1.5.0) (2022-09-20)
 
 
