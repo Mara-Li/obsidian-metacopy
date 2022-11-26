@@ -12,13 +12,16 @@ export function createLink(
 	let url = metaCopy.value;
 	const folderPath = checkSlash(url).replace(/(^\/|\/$)/, "");
 	const folder = folderPath.split("/").slice(-1)[0];
+	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
 	if (settings) {
 		let baseLink = settings.baseLink;
+		if (meta && meta["baselink"] !== undefined) {
+			baseLink = meta["baselink"];
+		}
 		baseLink = checkSlash(baseLink);
 		const folderNote = settings.folderNote;
 		let fileName = file.name.replace(".md", "");
 		if (settings.useFrontMatterTitle) {
-			const meta = app.metadataCache.getFileCache(file)?.frontmatter;
 			if (meta && meta[settings.frontmattertitleKey] && meta[settings.frontmattertitleKey] !== file.name) {
 				fileName = meta[settings.frontmattertitleKey];
 			}
@@ -66,7 +69,7 @@ export async function getValue(
 	settings: MetaCopySettings
 ) {
 	const meta = getMeta(app, file, settings);
-	if (!meta) {
+	if (!meta || meta.value === undefined) {
 		return false;
 	}
 	let value = meta.value.toString();
