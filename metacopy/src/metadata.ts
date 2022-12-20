@@ -4,6 +4,9 @@ import {disableMetaCopy} from "./pluginBehavior";
 
 
 export function getMeta(app: App, file: TFile, settings: MetaCopySettings): metaCopyValue {
+	if (!file) {
+		return null;
+	}
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
 	if (meta === undefined) {
 		return null;
@@ -50,9 +53,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 
 
 export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const metaValue: any[]=[];
+	const metaValue: unknown[]=[];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
 	const keyMeta = settings.copyKey.replace(" ", ",").replace(",,", ",");
 	let listKey = keyMeta.split(",");
