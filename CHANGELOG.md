@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.5.1...1.6.0) (2022-12-31)
+
+
+### Features
+
+* Adding link replacement as in Github Publisher ([50c25fb](https://github.com/Lisandra-dev/obsidian-metacopy/commit/50c25fb87bc23e2de8482c73f2ccaefc4e45f2d5))
+
 ### [1.5.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.6.0...1.5.1) (2022-12-20)
 
 
