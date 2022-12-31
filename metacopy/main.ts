@@ -8,6 +8,7 @@ import {CopyMetaSuggester} from "./modal";
 import {getValue} from "./src/utils";
 import {getMeta, checkMeta} from "./src/metadata";
 import {disableMetaCopy} from "./src/pluginBehavior";
+import { t } from "./i18n";
 
 export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
@@ -24,7 +25,7 @@ export default class MetaCopy extends Plugin {
 					return false;
 				}
 				const keyMeta = meta.key;
-				let title = "Copy [" + keyMeta + "]";
+				let title = t("command.copy") as string;
 				let icon = "two-blank-pages";
 				const enableMetaCopy = disableMetaCopy(
 					this.app,
@@ -32,7 +33,7 @@ export default class MetaCopy extends Plugin {
 					file
 				);
 				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
-					title = "MetaCopy URL";
+					title = (t("command.copyURL") as string);
 					icon = "price-tag-glyph";
 				}
 
@@ -67,7 +68,7 @@ export default class MetaCopy extends Plugin {
 					menu.addSeparator();
 					menu.addItem((item) => {
 						item.setSection("info");
-						item.setTitle("MetaCopy URL")
+						item.setTitle(t("command.copyURL") as string)
 							.setIcon("price-tag-glyph")
 							.onClick(async () => {
 								await getValue(

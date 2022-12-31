@@ -2,6 +2,7 @@ import {App, FuzzySuggestModal, TFile} from "obsidian";
 import {MetaCopySettings} from "./settings";
 import {copy, createLink} from "./src/utils";
 import {getAllMeta} from "./src/metadata";
+import { t } from "./i18n";
 
 
 interface CopyMetaModal {
@@ -36,7 +37,8 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 			item.value = "- " + item.value.replaceAll(",", "\n- ");
 		}
 		let contents = item.value;
-		if (item.key === "Copy link") {
+		const cmd = t("command.copy") as string;
+		if (item.key === cmd) {
 			contents = createLink(
 				this.file,
 				this.settings,

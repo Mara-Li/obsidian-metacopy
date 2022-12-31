@@ -49,6 +49,9 @@ export default {
 
 	command : {
 		metadataMessage: (key: string): string => `Metadata key "${key}" copied to the clipboard.`,
-		metadataMessageURL: "URL send to the clipboard."
+		metadataMessageURL: "URL send to the clipboard.",
+		copy: "Copy link",
+		copyCmd: (key: string): string  => `Copy [${key}]`,
+		copyURL: "MetaCopy : Create URL",
 	},
 };

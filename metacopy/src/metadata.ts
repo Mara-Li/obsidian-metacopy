@@ -1,6 +1,7 @@
 import {App, TFile} from "obsidian";
 import {MetaCopySettings, metaCopyValue} from "../settings";
 import {disableMetaCopy} from "./pluginBehavior";
+import { t } from "../i18n";
 
 
 export function getMeta(app: App, file: TFile, settings: MetaCopySettings): metaCopyValue {
@@ -47,13 +48,14 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): meta
 export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
-	const checkKey = meta?.key === "DefaultKey" || meta?.key === "Copy link";
+	const cmd = t("command.copy") as string;
+	const checkKey = meta?.key === "DefaultKey" || meta?.key === cmd;
 	return !!file && checkKey;
 }
 
 
 export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
-	const metaValue: unknown[]=[];
+	const metaValue: string[]=[];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
 	const keyMeta = settings.copyKey.replace(" ", ",").replace(",,", ",");
 	let listKey = keyMeta.split(",");
@@ -82,7 +84,7 @@ export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	);
 	if (enableMetaCopy && settings.defaultKeyLink) {
 		mappedListKey[mappedListKey.length] = {
-			key: "Copy link",
+			key: t("command.copy") as string,
 			value: settings.defaultKeyLink
 		};
 	}

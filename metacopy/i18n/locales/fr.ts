@@ -48,6 +48,11 @@ export default {
 	},
 	command : {
 		metadataMessage: (key: string): string => `Clé de métadonnée "${key}" copiée dans le presse-papier`,
-		metadataMessageURL: "URL envoyé dans le presse-papier"
+		metadataMessageURL: "URL envoyé dans le presse-papier",
+		copy: "Copier le lien",
+		copyCmd: (key: string): string  => `Copie de [${key}]`,
+		copyURL: "MetaCopy : Créer URL",
+
+
 	},
 };
