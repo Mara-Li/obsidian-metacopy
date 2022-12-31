@@ -1,5 +1,5 @@
 import {App, PluginSettingTab, Setting} from "obsidian";
-import t from "./i18n";
+import { t } from "./i18n";
 import MetaCopy from "./main";
 
 export interface MetaCopySettings {
@@ -13,6 +13,8 @@ export interface MetaCopySettings {
 	behaviourLinkCreator: string;
 	useFrontMatterTitle: boolean;
 	frontmattertitleKey: string;
+	titleRegex: string;
+	titleReplace: string;
 }
 
 export interface metaCopyValue
@@ -31,7 +33,9 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	defaultKeyLink: "",
 	behaviourLinkCreator: "categoryKey",
 	useFrontMatterTitle: false,
-	frontmattertitleKey: "title"
+	frontmattertitleKey: "title",
+	titleRegex: "",
+	titleReplace: "",
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -43,7 +47,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 	}
 
 
-	display(): any {
+	display(): void {
 		const {containerEl} = this;
 
 		function showSettings(containerEl: Setting) {
@@ -63,21 +67,21 @@ export class CopySettingsTabs extends PluginSettingTab {
 		containerEl.createEl("h2", {text: t("metaCopySettings") as string});
 
 		new Setting(containerEl)
-			.setName(t("keyTitleSetting") as string)
-			.setDesc(t("keyTitleDesc") as string)
+			.setName(t("keyTitle.title") as string)
+			.setDesc(t("keyTitle.desc") as string)
 			.addTextArea((text) =>
 				text
-					.setPlaceholder(t("keyTitlePlaceholder") as string)
+					.setPlaceholder(t("keyTitle.placeholder") as string)
 					.setValue(this.plugin.settings.copyKey)
 					.onChange(async (value) => {
 						this.plugin.settings.copyKey = value;
 						await this.plugin.saveSettings();
 					})
 			);
-		containerEl.createEl("h3", {text: (t("linkCreatorHeader") as string)});
+		containerEl.createEl("h3", {text: (t("linkCreator.header") as string)});
 		new Setting(containerEl)
-			.setName(t("baseLink") as string)
-			.setDesc(t("baseLinkDesc") as string)
+			.setName(t("linkCreator.baseLink") as string)
+			.setDesc(t("linkCreator.baseLinkDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("https://obsidian-file.github.io/")
@@ -89,14 +93,14 @@ export class CopySettingsTabs extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName(t("defaultBehavior") as string)
-			.setDesc(t("defaultBehaviorDesc") as string)
+			.setName(t("linkCreator.behavior.title") as string)
+			.setDesc(t("linkCreator.behavior.desc") as string)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
-						fixedFolder: t("fixedFolder") as string,
-						categoryKey: t("categoryKey") as string,
-						obsidianPath: t("obsidianPath") as string,
+						fixedFolder: t("linkCreator.behavior.fixedFolder") as string,
+						categoryKey: t("linkCreator.behavior.categoryKey") as string,
+						obsidianPath: t("linkCreator.behavior.obsidianPath") as string,
 					})
 					.setValue(this.plugin.settings.behaviourLinkCreator)
 					.onChange(async (value) => {
@@ -114,8 +118,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 					}));
 
 		const keyLinkSettings = new Setting(containerEl)
-			.setName(t("keyLink") as string)
-			.setDesc(t("keyLinkDesc") as string)
+			.setName(t("linkCreator.keyLink.title") as string)
+			.setDesc(t("linkCreator.keyLink.desc") as string)
 			.setClass("metacopy-settings")
 			.addText((text) =>
 				text
@@ -134,8 +138,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 		}
 
 		new Setting(containerEl)
-			.setName(t("defaultValue") as string)
-			.setDesc(t("defaultValueDesc") as string)
+			.setName(t("linkCreator.keyLink.defaultValue") as string)
+			.setDesc(t("linkCreator.keyLink.defaultValueDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("")
@@ -146,8 +150,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 					}));
 
 		const folderNoteSettings = new Setting(containerEl)
-			.setName(t("folderNote") as string)
-			.setDesc(t("folderNoteDesc") as string)
+			.setName(t("linkCreator.folderNote.title") as string)
+			.setDesc(t("linkCreator.folderNote.desc") as string)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.folderNote);
 				toggle.onChange(async (value) => {
@@ -157,8 +161,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 			});
 
 		const titleSettings = new Setting(containerEl)
-			.setName(t("useFrontMatterTitle") as string)
-			.setDesc(t("useFrontMatterTitleDesc") as string)
+			.setName(t("linkCreator.useFrontMatterTitle.title") as string)
+			.setDesc(t("linkCreator.useFrontMatterTitle.desc") as string)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.useFrontMatterTitle);
 				toggle.onChange(async (value) => {
@@ -179,6 +183,28 @@ export class CopySettingsTabs extends PluginSettingTab {
 						});
 				});
 		}
+		
+		new Setting(containerEl)
+			.setName(t("linkCreator.regexReplaceTitle.title") as string)
+			.setDesc(t("linkCreator.regexReplaceTitle.desc") as string)
+			.addText((text) =>
+				text
+					.setPlaceholder("")
+					.setValue(this.plugin.settings.titleRegex)
+					.onChange(async (value) => {
+						this.plugin.settings.titleRegex = value;
+						await this.plugin.saveSettings();
+					})
+			)
+			.addText((text) =>
+				text
+					.setPlaceholder("")
+					.setValue(this.plugin.settings.titleReplace)
+					.onChange(async (value) => {
+						this.plugin.settings.titleReplace = value;
+						await this.plugin.saveSettings();
+					})
+			);
 
 		if (this.plugin.settings.behaviourLinkCreator === "fixedFolder") {
 			hideSettings(folderNoteSettings);
@@ -186,16 +212,16 @@ export class CopySettingsTabs extends PluginSettingTab {
 			showSettings(folderNoteSettings);
 		}
 
-		containerEl.createEl("h3", {text: t("disableMetaCopy") as string});
+		containerEl.createEl("h3", {text: t("disable.title") as string});
 		containerEl.createEl("p", {
-			text: t("disableMetaCopyDesc") as string,
+			text: t("disable.desc") as string,
 		});
 		containerEl.createEl("p", {
-			text: t("disableMetaCopyDescURL") as string,
+			text: t("disable.descURL") as string,
 		});
 		new Setting(containerEl)
-			.setName(t("menuBehavior") as string)
-			.setDesc(t("menuBehaviorDesc") as string)
+			.setName(t("menuBehavior.title") as string)
+			.setDesc(t("menuBehavior.desc") as string)
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.comport);
 				toggle.onChange(async (value) => {
@@ -204,8 +230,8 @@ export class CopySettingsTabs extends PluginSettingTab {
 				});
 			});
 		new Setting(containerEl)
-			.setName(t("keyMenu") as string)
-			.setDesc(t("keyMenuDesc") as string)
+			.setName(t("menuBehavior.keyMenu") as string)
+			.setDesc(t("menuBehavior.keyMenuDesc") as string)
 			.addText((text) =>
 				text
 					.setPlaceholder("")

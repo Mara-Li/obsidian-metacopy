@@ -1,7 +1,7 @@
 import {App, TFile, Notice, TFolder} from "obsidian";
 import {MetaCopySettings, metaCopyValue} from "../settings";
 import {getMeta} from "./metadata";
-import t, {StringFunc} from "../i18n";
+import { StringFunc, t } from "../i18n";
 
 export function createLink(
 	file: TFile,
@@ -13,6 +13,7 @@ export function createLink(
 	const folderPath = checkSlash(url).replace(/(^\/|\/$)/, "");
 	const folder = folderPath.split("/").slice(-1)[0];
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
+	const cmd = t("command.copy") as string;
 	if (settings) {
 		let baseLink = settings.baseLink;
 		if (meta && meta["baselink"] !== undefined) {
@@ -28,14 +29,13 @@ export function createLink(
 		}
 		if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
-			if ((metaCopy.key === keyLink) || (metaCopy.key == "DefaultKey") || (metaCopy.key == "Copy link")) {
+			if ((metaCopy.key === keyLink) || (metaCopy.key == "DefaultKey") || (metaCopy.key == cmd)) {
 				if (fileName === folder && folderNote) {
 					fileName = "/";
 				} else {
 					fileName = "/" + fileName + "/";
 				}
-				url = baseLink + folderPath + fileName;
-				url = encodeURI(url);
+				url = baseLink + folderPath + regexOnFileName(fileName, settings);
 			}
 		} else if (settings.behaviourLinkCreator === "obsidianPath") {
 			const folderPath = file.parent.path.replace(/\/$/, "");
@@ -52,15 +52,12 @@ export function createLink(
 			} else {
 				filename = "/" + filename + "/";
 			}
-			url = baseLink + settings.defaultKeyLink.replace(/\/$/, "") + "/" + folderPath + filename;
-			url = encodeURI(url);
+			url = baseLink + settings.defaultKeyLink.replace(/\/$/, "") + "/" + folderPath + regexOnFileName(filename, settings);
 		} else {
-			url = baseLink + settings.defaultKeyLink + "/" + file.name.replace(".md", "") + "/";
-			url = encodeURI(url);
+			url = baseLink + settings.defaultKeyLink + "/" + regexOnFileName(file.name, settings) + "/";
 		}
-
 	}
-	return url;
+	return encodeURI(url);
 }
 
 export async function getValue(
@@ -76,7 +73,7 @@ export async function getValue(
 	if (value.split(",").length > 1) {
 		value = "- " + value.replaceAll(",", "\n- ");
 	}
-	const metaCopyValue = {key: meta.key, value: meta.value};
+	const metaCopyValue = {key: meta.key, value: value};
 	const linkValue = createLink(file, settings, metaCopyValue, app);
 	await copy(linkValue, meta.key, settings);
 }
@@ -93,10 +90,38 @@ export function checkSlash(
 
 export async function copy(content: string, item: string, settings: MetaCopySettings) {
 	await navigator.clipboard.writeText(content);
-	let message = "Metadata " + item + " copied to clipboard";
-	message = (t("metadataMessage") as StringFunc)(item);
+	let message = (t("command.metadataMessage") as StringFunc)(item);
 	if (item == "DefaultKey" || item == settings.keyLink) {
-		message = t("metadataMessageURL") as string;
+		message = t("command.metadataMessageURL") as string;
 	}
 	new Notice(message);
 }
+
+/**
+ * Apply a regex edition on the title. It can be used to remove special characters or to add a prefix or suffix
+ * @param {string} fileName file name
+ * @param {MetaCopySettings} settings Settings
+ * @return {string} edited file name
+ */
+export function regexOnFileName(fileName: string, settings: MetaCopySettings): string {
+	fileName = fileName.replace(".md", "");
+	if (settings.titleRegex.length > 0) {
+		const toReplace = settings.titleRegex;
+		const replaceWith = settings.titleReplace;
+		if (toReplace.match(/\/.+\//)) {
+			const flagsRegex = toReplace.match(/\/([gimy]+)$/);
+			const flags = flagsRegex ? Array.from(new Set(flagsRegex[1].split(""))).join("") : "";
+			const regex = new RegExp(toReplace.replace(/\/(.+)\/.*/, "$1"), flags);
+			return fileName.replace(
+				regex,
+				replaceWith
+			);
+		} else {
+			return fileName.replaceAll(
+				toReplace,
+				replaceWith
+			);
+		}
+	}
+}
+
