@@ -1,7 +1,25 @@
-import {App, TFile, Notice, TFolder} from "obsidian";
+import { App, TFile, Notice, TFolder, Vault, FrontMatterCache } from "obsidian";
 import {MetaCopySettings, metaCopyValue} from "../settings";
 import {getMeta} from "./metadata";
 import { StringFunc, t } from "../i18n";
+
+function getTitleField(
+	frontmatter: FrontMatterCache,
+	file: TFile,
+	settings: MetaCopySettings
+): string {
+	let fileName = file.name;
+	if (
+		frontmatter &&
+		frontmatter[settings.frontmattertitleKey] &&
+		frontmatter[settings.frontmattertitleKey] !== file.name
+	) {
+		
+		fileName= frontmatter[settings.frontmattertitleKey] + ".md";
+	}
+	return fileName;
+}
+
 
 export function createLink(
 	file: TFile,
@@ -21,12 +39,7 @@ export function createLink(
 		}
 		baseLink = checkSlash(baseLink);
 		const folderNote = settings.folderNote;
-		let fileName = file.name.replace(".md", "");
-		if (settings.useFrontMatterTitle) {
-			if (meta && meta[settings.frontmattertitleKey] && meta[settings.frontmattertitleKey] !== file.name) {
-				fileName = meta[settings.frontmattertitleKey];
-			}
-		}
+		let fileName = getTitleField(meta, file, settings);
 		if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
 			if ((metaCopy.key === keyLink) || (metaCopy.key == "DefaultKey") || (metaCopy.key == cmd)) {
@@ -38,26 +51,33 @@ export function createLink(
 				url = baseLink + folderPath + regexOnFileName(fileName, settings);
 			}
 		} else if (settings.behaviourLinkCreator === "obsidianPath") {
-			const folderPath = file.parent.path.replace(/\/$/, "");
-			let filename = file.name.replace(".md", "");
-			if (
-				(filename === file.parent.name && folderNote) 
-				|| 
-				(folderNote 
-					&& app.vault.getAbstractFileByPath(file.path.replace(".md", ""))
-					&& app.vault.getAbstractFileByPath(file.path.replace(".md", "")) instanceof TFolder)) {
-				filename = "/";
-			} else if (file.parent.isRoot()) {
-				filename = filename + "/";
-			} else {
-				filename = "/" + filename + "/";
-			}
-			url = baseLink + settings.defaultKeyLink.replace(/\/$/, "") + "/" + folderPath + regexOnFileName(filename, settings);
+			fileName = folderNoteIndexOBS(file, app.vault, settings, fileName);
+			url = baseLink + settings.defaultKeyLink + fileName;
 		} else {
-			url = baseLink + settings.defaultKeyLink + "/" + regexOnFileName(file.name, settings) + "/";
+			url = baseLink + settings.defaultKeyLink + "/" + regexOnFileName(fileName, settings) + "/";
 		}
 	}
 	return encodeURI(url);
+}
+
+function folderNoteIndexOBS(
+	file: TFile,
+	vault: Vault,
+	settings: MetaCopySettings,
+	fileName: string
+): string {
+	const defaultPath = `/${file.parent.path}/${regexOnFileName(fileName, settings)}`;
+	if (!settings.folderNote) return defaultPath;
+	const folderParent = file.parent.name;
+	if (fileName.replace(".md", "") === folderParent) return `/${file.parent.path}/`;
+	const outsideFolder = vault.getAbstractFileByPath(
+		file.path.replace(".md", "")
+	);
+	if (outsideFolder && outsideFolder instanceof TFolder) {
+		return `/${outsideFolder.path}/` ;
+	} else {
+		return defaultPath;
+	}
 }
 
 export async function getValue(
@@ -104,6 +124,7 @@ export async function copy(content: string, item: string, settings: MetaCopySett
  * @return {string} edited file name
  */
 export function regexOnFileName(fileName: string, settings: MetaCopySettings): string {
+	if (fileName === "/" && settings.folderNote) return fileName;
 	fileName = fileName.replace(".md", "");
 	if (settings.titleRegex.length > 0) {
 		const toReplace = settings.titleRegex;
@@ -123,5 +144,6 @@ export function regexOnFileName(fileName: string, settings: MetaCopySettings): s
 			);
 		}
 	}
+	return fileName;
 }
 
