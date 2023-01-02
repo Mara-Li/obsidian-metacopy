@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.7.0...1.7.1) (2023-01-02)
+
+
+### Bug Fixes
+
+* title error using obsidian path ([59e8ee6](https://github.com/Lisandra-dev/obsidian-metacopy/commit/59e8ee6ce794728f2c71adae5ace26bdf78de8cb))
+
 ## [1.7.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.5.1...1.7.0) (2022-12-31)
 
 
