@@ -33,6 +33,10 @@ export default {
 		regexReplaceTitle: {
 			title: "Apply a replacement to the filename",
 			desc: "If the text is between \"//\", it will be used as a regex. Otherwise, it will be used as a string.",
+		},
+		replaceLinkPart: {
+			title: "Replace a part of the link",
+			desc: "You can add multiple string, separated by a comma.",
 		}
 	},
 	disable: {

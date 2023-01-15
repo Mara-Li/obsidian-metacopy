@@ -33,6 +33,10 @@ export default {
 		regexReplaceTitle: {
 			title: "Appliquer un remplacement au titre",
 			desc: "Si le texte est entre \"//\", il sera interprété comme une expression régulière. Sinon, il sera interprété comme une chaîne de caractères.",
+		},
+		replaceLinkPart: {
+			title: "Supprimer une partie du lien",
+			desc: "Vous pouvez ajouter plusieurs chaînes de caractères, séparées par une virgule.",
 		}
 	},
 	disable: {

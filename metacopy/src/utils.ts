@@ -57,6 +57,11 @@ export function createLink(
 			url = baseLink + settings.defaultKeyLink + "/" + regexOnFileName(fileName, settings) + "/";
 		}
 	}
+	if (settings.removeLinkPart) {
+		for (const part of settings.removeLinkPart) {
+			url = url.replace(part, "");
+		}
+	}
 	return encodeURI(url);
 }
 

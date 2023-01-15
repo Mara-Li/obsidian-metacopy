@@ -15,6 +15,7 @@ export interface MetaCopySettings {
 	frontmattertitleKey: string;
 	titleRegex: string;
 	titleReplace: string;
+	removeLinkPart: string[];
 }
 
 export interface metaCopyValue
@@ -36,6 +37,7 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	frontmattertitleKey: "title",
 	titleRegex: "",
 	titleReplace: "",
+	removeLinkPart: [],
 };
 
 export class CopySettingsTabs extends PluginSettingTab {
@@ -211,7 +213,23 @@ export class CopySettingsTabs extends PluginSettingTab {
 		} else {
 			showSettings(folderNoteSettings);
 		}
-
+		
+		new Setting(containerEl)
+			.setName(t("linkCreator.replaceLinkPart.title") as string)
+			.setDesc(t("linkCreator.replaceLinkPart.desc") as string)
+			.addTextArea((text) =>
+				text
+					.setPlaceholder("")
+					.setValue(this.plugin.settings.removeLinkPart.join(", "))
+					.onChange(async (value) => {
+						this.plugin.settings.removeLinkPart = value
+							.split(/[,\n]\W*/)
+							.map((item) => item.trim())
+							.filter((item) => item.length > 0);
+						await this.plugin.saveSettings();
+					})
+			);
+		
 		containerEl.createEl("h3", {text: t("disable.title") as string});
 		containerEl.createEl("p", {
 			text: t("disable.desc") as string,
