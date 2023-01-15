@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.7.1...1.8.0) (2023-01-15)
+
+
+### Features
+
+* delete a part of the links ([9a692e4](https://github.com/Lisandra-dev/obsidian-metacopy/commit/9a692e44686adf14fc7d521db91aaef40149a8f3))
+
 ### [1.7.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.7.0...1.7.1) (2023-01-02)
 
 

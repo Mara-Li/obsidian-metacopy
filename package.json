@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-metacopy",
-	"version": "1.7.1",
+	"version": "1.8.0",
 	"description": "This is a plugin that copy the value of a frontmatter key.",
 	"main": "main.js",
 	"scripts": {
