@@ -9,6 +9,7 @@ function getTitleField(
 	settings: MetaCopySettings
 ): string {
 	let fileName = file.name;
+	if (!settings.useFrontMatterTitle) return fileName;
 	if (
 		frontmatter &&
 		frontmatter[settings.frontmattertitleKey] &&
