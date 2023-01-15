@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.8.0...1.8.1) (2023-01-15)
+
+
+### Bug Fixes
+
+* forgot to return if usefrontmattertitle is set to false ([82fe2e5](https://github.com/Lisandra-dev/obsidian-metacopy/commit/82fe2e5a84cb02ee29eae8f9fcdf4234b0811f84))
+
 ## [1.8.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.7.1...1.8.0) (2023-01-15)
 
 
