@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.9.0...1.9.1) (2023-01-21)
+
 ## [1.9.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.8.1...1.9.0) (2023-01-21)
 
 
