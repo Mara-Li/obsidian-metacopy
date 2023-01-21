@@ -9,9 +9,19 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): meta
 		return null;
 	}
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
+	const defaultKey = {
+		key : "DefaultKey",
+		value : settings.defaultKeyLink,
+
+	};
 	if (meta === undefined) {
-		return null;
+		if (settings.behaviourLinkCreator !== "obsidianPath") {
+			return null;
+		} else {
+			return defaultKey;
+		}
 	}
+	
 	let linkValue = "";
 	let metaKey = "";
 	if (settings) {
@@ -36,11 +46,7 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): meta
 		value: linkValue
 	};
 	if (!linkValue && settings.defaultKeyLink) {
-		return {
-			key : "DefaultKey",
-			value : settings.defaultKeyLink,
-
-		};
+		return defaultKey;
 	}
 	return metaKeys;
 }

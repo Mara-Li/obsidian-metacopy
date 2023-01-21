@@ -5,6 +5,9 @@ export function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFil
 	const toggle = settings.comport;
 	const fileCache = app.metadataCache.getFileCache(file);
 	const meta = fileCache?.frontmatter;
+	if (!meta && settings.behaviourLinkCreator === "obsidianPath") {
+		return true;
+	}
 	if (toggle) {
 		/* toggle : true ⇒ Disable on all file unless there is the key */
 		if (meta === undefined) {

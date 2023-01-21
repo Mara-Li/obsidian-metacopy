@@ -223,7 +223,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 					.setValue(this.plugin.settings.removeLinkPart.join(", "))
 					.onChange(async (value) => {
 						this.plugin.settings.removeLinkPart = value
-							.split(/[,\n]\W*/)
+							.split(/[,\n]/)
 							.map((item) => item.trim())
 							.filter((item) => item.length > 0);
 						await this.plugin.saveSettings();

@@ -92,6 +92,7 @@ export async function getValue(
 	settings: MetaCopySettings
 ) {
 	const meta = getMeta(app, file, settings);
+	console.log(meta);
 	if (!meta || meta.value === undefined) {
 		return false;
 	}
