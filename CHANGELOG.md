@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.8.1...1.9.0) (2023-01-21)
+
+
+### Features
+
+* allow obsidian path to be created if there is no frontmatter ([22213ab](https://github.com/Lisandra-dev/obsidian-metacopy/commit/22213ab6f0b20d04d12d164cf6eefbe816ad10ee))
+
 ### [1.8.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.8.0...1.8.1) (2023-01-15)
 
 
