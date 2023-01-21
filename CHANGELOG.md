@@ -58,14 +58,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* specify a frontmatter key for the title creation ([00677ef](https://github.com/Lisandra-dev/obsidian-metacopy/commit/00677ef746da7035284bc3e2a57c87a2308db1c2))
+* specify a frontmatter frontmatterKey for the title creation ([00677ef](https://github.com/Lisandra-dev/obsidian-metacopy/commit/00677ef746da7035284bc3e2a57c87a2308db1c2))
 
 ## [1.4.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.3.0...1.4.0) (2022-09-08)
 
 
 ### Features
 
-* specify a frontmatter key for the title creation ([80ebbae](https://github.com/Lisandra-dev/obsidian-metacopy/commit/80ebbaeb48f1f04d3a731a583a4b153baa75178a))
+* specify a frontmatter frontmatterKey for the title creation ([80ebbae](https://github.com/Lisandra-dev/obsidian-metacopy/commit/80ebbaeb48f1f04d3a731a583a4b153baa75178a))
 
 ## [1.3.0](https://github.com/Mara-Li/obsidian-metacopy/compare/1.2.2...1.3.0) (2022-08-06)
 
@@ -159,7 +159,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
--   **option:** Disable/enable plugin based on a frontmatter key ([ed85cb2](https://github.com/Mara-Li/obsidian-metacopy/commit/ed85cb2547eca93fdeb95b96c9f882ef4bbb5241))
+-   **option:** Disable/enable plugin based on a frontmatter frontmatterKey ([ed85cb2](https://github.com/Mara-Li/obsidian-metacopy/commit/ed85cb2547eca93fdeb95b96c9f882ef4bbb5241))
 
 ### [0.0.21](https://github.com/Mara-Li/obsidian-metacopy/compare/0.0.20...0.0.21) (2022-01-01)
 

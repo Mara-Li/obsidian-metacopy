@@ -1,21 +1,21 @@
 import {App, TFile} from "obsidian";
-import {MetaCopySettings, metaCopyValue} from "../settings";
+import { BehaviourLinkCreator, MetaCopySettings, MetaCopyValue } from "../settings";
 import {disableMetaCopy} from "./pluginBehavior";
 import { t } from "../i18n";
 
 
-export function getMeta(app: App, file: TFile, settings: MetaCopySettings): metaCopyValue {
+export function getMeta(app: App, file: TFile, settings: MetaCopySettings): MetaCopyValue {
 	if (!file) {
 		return null;
 	}
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
-	const defaultKey = {
-		key : "DefaultKey",
-		value : settings.defaultKeyLink,
+	const defaultKey: MetaCopyValue = {
+		frontmatterKey : "DefaultKey",
+		correspondingValue : settings.defaultKeyLink,
 
 	};
 	if (meta === undefined) {
-		if (settings.behaviourLinkCreator !== "obsidianPath") {
+		if (settings.behaviourLinkCreator !== BehaviourLinkCreator.OBSIDIAN_PATH) {
 			return null;
 		} else {
 			return defaultKey;
@@ -41,9 +41,9 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): meta
 			metaKey = listKey[0];
 		}
 	}
-	const metaKeys = {
-		key: metaKey,
-		value: linkValue
+	const metaKeys: MetaCopyValue = {
+		frontmatterKey: metaKey,
+		correspondingValue: linkValue
 	};
 	if (!linkValue && settings.defaultKeyLink) {
 		return defaultKey;
@@ -55,7 +55,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
 	const cmd = t("command.copy") as string;
-	const checkKey = meta?.key === "DefaultKey" || meta?.key === cmd;
+	const checkKey = meta?.frontmatterKey === "DefaultKey" || meta?.frontmatterKey === cmd;
 	return !!file && checkKey;
 }
 

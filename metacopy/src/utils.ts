@@ -1,5 +1,5 @@
 import { App, TFile, Notice, TFolder, Vault, FrontMatterCache } from "obsidian";
-import {MetaCopySettings, metaCopyValue} from "../settings";
+import { BehaviourLinkCreator, MetaCopySettings, MetaCopyValue } from "../settings";
 import {getMeta} from "./metadata";
 import { StringFunc, t } from "../i18n";
 
@@ -25,10 +25,10 @@ function getTitleField(
 export function createLink(
 	file: TFile,
 	settings: MetaCopySettings,
-	metaCopy: metaCopyValue,
+	metaCopy: MetaCopyValue,
 	app: App,
 ) {
-	let url = metaCopy.value;
+	let url = metaCopy.correspondingValue;
 	const folderPath = checkSlash(url).replace(/(^\/|\/$)/, "");
 	const folder = folderPath.split("/").slice(-1)[0];
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
@@ -43,7 +43,7 @@ export function createLink(
 		let fileName = getTitleField(meta, file, settings);
 		if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
-			if ((metaCopy.key === keyLink) || (metaCopy.key == "DefaultKey") || (metaCopy.key == cmd)) {
+			if ((metaCopy.frontmatterKey === keyLink) || (metaCopy.frontmatterKey == "DefaultKey") || (metaCopy.frontmatterKey == cmd)) {
 				if (fileName === folder && folderNote) {
 					fileName = "/";
 				} else {
@@ -51,7 +51,7 @@ export function createLink(
 				}
 				url = baseLink + folderPath + regexOnFileName(fileName, settings);
 			}
-		} else if (settings.behaviourLinkCreator === "obsidianPath") {
+		} else if (settings.behaviourLinkCreator === BehaviourLinkCreator.OBSIDIAN_PATH) {
 			fileName = folderNoteIndexOBS(file, app.vault, settings, fileName);
 			url = baseLink + settings.defaultKeyLink + fileName;
 		} else {
@@ -91,18 +91,17 @@ export async function getValue(
 	file: TFile,
 	settings: MetaCopySettings
 ) {
-	const meta = getMeta(app, file, settings);
-	console.log(meta);
-	if (!meta || meta.value === undefined) {
+	const meta: MetaCopyValue = getMeta(app, file, settings);
+	if (!meta || meta.correspondingValue === undefined) {
 		return false;
 	}
-	let value = meta.value.toString();
+	let value = meta.correspondingValue.toString();
 	if (value.split(",").length > 1) {
 		value = "- " + value.replaceAll(",", "\n- ");
 	}
-	const metaCopyValue = {key: meta.key, value: value};
+	const metaCopyValue:MetaCopyValue = {frontmatterKey: meta.frontmatterKey, correspondingValue: value};
 	const linkValue = createLink(file, settings, metaCopyValue, app);
-	await copy(linkValue, meta.key, settings);
+	await copy(linkValue, meta.frontmatterKey, settings);
 }
 
 export function checkSlash(

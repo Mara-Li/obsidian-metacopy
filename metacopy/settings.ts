@@ -18,10 +18,16 @@ export interface MetaCopySettings {
 	removeLinkPart: string[];
 }
 
-export interface metaCopyValue
+export interface MetaCopyValue
 {
-	key: string;
-	value: string;
+	frontmatterKey: string;
+	correspondingValue: string;
+}
+
+export enum BehaviourLinkCreator {
+	CATEGORY_KEY = "categoryKey",
+	OBSIDIAN_PATH = "obsidianPath",
+	FIXED_FOLDER = "fixedFolder",
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
@@ -32,13 +38,15 @@ export const DEFAULT_SETTINGS: MetaCopySettings = {
 	disableKey: "",
 	folderNote: false,
 	defaultKeyLink: "",
-	behaviourLinkCreator: "categoryKey",
+	behaviourLinkCreator: BehaviourLinkCreator.CATEGORY_KEY,
 	useFrontMatterTitle: false,
 	frontmattertitleKey: "title",
 	titleRegex: "",
 	titleReplace: "",
 	removeLinkPart: [],
 };
+
+
 
 export class CopySettingsTabs extends PluginSettingTab {
 	plugin: MetaCopy;
@@ -107,9 +115,9 @@ export class CopySettingsTabs extends PluginSettingTab {
 					.setValue(this.plugin.settings.behaviourLinkCreator)
 					.onChange(async (value) => {
 						this.plugin.settings.behaviourLinkCreator = value;
-						if (value === "categoryKey") {
+						if (value === BehaviourLinkCreator.CATEGORY_KEY) {
 							showSettings(keyLinkSettings);
-						} else if (value === "fixedFolder") {
+						} else if (value === BehaviourLinkCreator.FIXED_FOLDER) {
 							hideSettings(folderNoteSettings);
 							hideSettings(keyLinkSettings);
 						} else {
@@ -133,7 +141,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 					})
 			);
 
-		if (this.plugin.settings.behaviourLinkCreator === "categoryKey") {
+		if (this.plugin.settings.behaviourLinkCreator === BehaviourLinkCreator.CATEGORY_KEY) {
 			showSettings(keyLinkSettings);
 		} else {
 			hideSettings(keyLinkSettings);
@@ -208,7 +216,7 @@ export class CopySettingsTabs extends PluginSettingTab {
 					})
 			);
 
-		if (this.plugin.settings.behaviourLinkCreator === "fixedFolder") {
+		if (this.plugin.settings.behaviourLinkCreator === BehaviourLinkCreator.FIXED_FOLDER) {
 			hideSettings(folderNoteSettings);
 		} else {
 			showSettings(folderNoteSettings);

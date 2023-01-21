@@ -42,7 +42,7 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 			contents = createLink(
 				this.file,
 				this.settings,
-				{key: item.key, value: item.value},
+				{frontmatterKey: item.key, correspondingValue: item.value},
 				this.app
 			);
 		}
