@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.2](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.9.1...1.9.2) (2023-01-28)
+
+
+### Bug Fixes
+
+* foldernote miscreated ([5f009ea](https://github.com/Lisandra-dev/obsidian-metacopy/commit/5f009ea3f7f7a8742cb862e8ce3964fab66c3848))
+
 ### [1.9.1](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.9.0...1.9.1) (2023-01-21)
 
 ## [1.9.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.8.1...1.9.0) (2023-01-21)
