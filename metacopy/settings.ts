@@ -3,7 +3,7 @@ import { t } from "./i18n";
 import MetaCopy from "./main";
 
 export interface MetaCopySettings {
-	copyKey: string;
+	copyKey: string[];
 	baseLink: string;
 	keyLink: string;
 	comport: boolean;
@@ -31,7 +31,7 @@ export enum BehaviourLinkCreator {
 }
 
 export const DEFAULT_SETTINGS: MetaCopySettings = {
-	copyKey: "",
+	copyKey: [],
 	baseLink: "",
 	keyLink: "",
 	comport: false,
@@ -82,9 +82,9 @@ export class CopySettingsTabs extends PluginSettingTab {
 			.addTextArea((text) =>
 				text
 					.setPlaceholder(t("keyTitle.placeholder") as string)
-					.setValue(this.plugin.settings.copyKey)
+					.setValue(this.plugin.settings.copyKey.join(", "))
 					.onChange(async (value) => {
-						this.plugin.settings.copyKey = value;
+						this.plugin.settings.copyKey = value.split(/[\n, ]/);
 						await this.plugin.saveSettings();
 					})
 			);

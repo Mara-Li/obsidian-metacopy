@@ -25,20 +25,17 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): Meta
 	let linkValue = "";
 	let metaKey = "";
 	if (settings) {
-		const keyMeta = settings.copyKey.replace(" ", ",").replace(",,", ",");
-		const listKey = keyMeta.split(",");
-		metaKey = keyMeta;
-		if (listKey.length > 1) {
-			for (let i = 0; i < listKey.length; i++) {
-				if (meta[listKey[i]] !== undefined) {
-					linkValue = meta[listKey[i]].trim();
-					metaKey = listKey[i].trim();
+		if (settings.copyKey.length > 1) {
+			for (let i = 0; i < settings.copyKey.length; i++) {
+				if (meta[settings.copyKey[i]] !== undefined) {
+					linkValue = meta[settings.copyKey[i]].trim();
+					metaKey = settings.copyKey[i].trim();
 					break;
 				}
 			}
 		} else {
-			linkValue = meta[listKey[0]];
-			metaKey = listKey[0];
+			linkValue = meta[settings.copyKey[0]];
+			metaKey = settings.copyKey[0];
 		}
 	}
 	const metaKeys: MetaCopyValue = {
@@ -63,8 +60,7 @@ export function checkMeta(app: App, settings: MetaCopySettings) {
 export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 	const metaValue: string[]=[];
 	const frontmatter = app.metadataCache.getCache(file.path).frontmatter;
-	const keyMeta = settings.copyKey.replace(" ", ",").replace(",,", ",");
-	let listKey = keyMeta.split(",");
+	let listKey = settings.copyKey;
 	listKey = listKey.map((x) => x.trim());
 	if (listKey.length > 0) {
 		for (let i = 0; i < listKey.length; i++) {

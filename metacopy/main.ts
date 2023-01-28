@@ -13,11 +13,21 @@ import { t } from "./i18n";
 export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
 
+	convertstringToList(toConvert: string): void {
+		// @ts-ignore
+		const str = this.settings[toConvert] as unknown as string;
+		if (typeof str === "string") {
+			// @ts-ignore
+			this.settings[toConvert] = str.split(/[\n, ]/).map((item) => item.trim());
+			this.saveSettings();
+		}
+	}
+	
 	async onload() {
 		console.log("MetaCopy loaded");
 		await this.loadSettings();
 		this.addSettingTab(new CopySettingsTabs(this.app, this));
-
+		this.convertstringToList("copyKey");
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file: TFile) => {
 				const meta = getMeta(this.app, file, this.settings);

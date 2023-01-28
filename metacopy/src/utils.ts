@@ -44,7 +44,7 @@ export function createLink(
 		if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
 			if ((metaCopy.frontmatterKey === keyLink) || (metaCopy.frontmatterKey == "DefaultKey") || (metaCopy.frontmatterKey == cmd)) {
-				if (fileName === folder && folderNote) {
+				if (fileName.replace(".md", "") === folder && folderNote) {
 					fileName = "/";
 				} else {
 					fileName = "/" + fileName + "/";
