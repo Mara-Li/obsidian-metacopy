@@ -3,9 +3,10 @@
 	"name": "Metacopy & URL",
 	"version": "1.9.2",
 	"minAppVersion": "0.15.3",
-	"description": "This is a plugin that copy the value of a frontmatter key and allowing to create link using various settings.",
-	"author": "Mara",
-	"authorUrl": "",
+	"description": "Copy the value of a frontmatter key and allows to create link from it using various settings.",
+	"author": "Mara-Li",
+    "authorUrl": "https://github.com/Mara-Li",
+    "fundingUrl": "https://ko-fi.com/lisandra_dev",
 	"isDesktopOnly": false,
 	"js": "main.js"
 }
