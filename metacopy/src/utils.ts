@@ -41,7 +41,10 @@ export function createLink(
 		baseLink = checkSlash(baseLink);
 		const folderNote = settings.folderNote;
 		let fileName = getTitleField(meta, file, settings);
-		if (settings.behaviourLinkCreator === "categoryKey") {
+		if (meta.path) {
+			url = baseLink + meta.path + regexOnFileName(fileName, settings);
+		}
+		else if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
 			if ((metaCopy.frontmatterKey === keyLink) || (metaCopy.frontmatterKey == "DefaultKey") || (metaCopy.frontmatterKey == cmd)) {
 				if (fileName.replace(".md", "") === folder && folderNote) {
