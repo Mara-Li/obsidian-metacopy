@@ -1,6 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.10.0](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.9.2...1.10.0) (2023-07-30)
+
+
+### Features
+
+* add support for path frontmatter keys ([8291d8d](https://github.com/Lisandra-dev/obsidian-metacopy/commit/8291d8d093820f0c8763e31f3a9601acbce5e9e5))
+
+
+### Bug Fixes
+
+* **contextMenu:** no context menu appear ([096b981](https://github.com/Lisandra-dev/obsidian-metacopy/commit/096b981af047e95f97db6180cdec66b6c793b1e5)), closes [#2](https://github.com/Lisandra-dev/obsidian-metacopy/issues/2)
+* **plugin:** the plugin doesn't work with the basic settings ([1a8cc4d](https://github.com/Lisandra-dev/obsidian-metacopy/commit/1a8cc4dc4a552a4ac760d182f726f06b25d7b95b)), closes [#2](https://github.com/Lisandra-dev/obsidian-metacopy/issues/2)
 
 ### [1.9.2](https://github.com/Lisandra-dev/obsidian-metacopy/compare/1.9.1...1.9.2) (2023-01-28)
 
