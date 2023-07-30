@@ -1,4 +1,4 @@
-import {Plugin, TFile} from "obsidian";
+import { Menu, Plugin, TFile } from "obsidian";
 import {
 	CopySettingsTabs,
 	DEFAULT_SETTINGS,
@@ -8,7 +8,7 @@ import {CopyMetaSuggester} from "./modal";
 import {getValue} from "./src/utils";
 import {getMeta, checkMeta} from "./src/metadata";
 import {disableMetaCopy} from "./src/pluginBehavior";
-import { t } from "./i18n";
+import { StringFunc, t } from "./i18n";
 
 export default class MetaCopy extends Plugin {
 	settings: MetaCopySettings;
@@ -23,6 +23,39 @@ export default class MetaCopy extends Plugin {
 		}
 	}
 	
+	enableMenu(menu: Menu, file: TFile): void {
+		const meta = getMeta(this.app, file, this.settings);
+		if (!meta) {
+			return;
+		}
+		const keyMeta = meta.frontmatterKey;
+		let title = (t("command.copy") as StringFunc)(keyMeta);
+		let icon = "two-blank-pages";
+		const enableMetaCopy = disableMetaCopy(
+			this.app,
+			this.settings,
+			file
+		);
+		if (this.settings.enableCopyLink && keyMeta === this.settings.keyLink) {
+			title = (t("command.copyURL") as string);
+			icon = "price-tag-glyph";
+		}
+
+		if (meta.correspondingValue && enableMetaCopy) {
+			menu.addSeparator();
+			menu.addItem((item) => {
+				item.setSection("info");
+				item.setTitle(title)
+					.setIcon(icon)
+					.onClick(async () => {
+						await getValue(this.app, file, this.settings);
+					});
+			});
+			menu.addSeparator();
+		}
+	}
+	
+	
 	async onload() {
 		console.log("MetaCopy loaded");
 		await this.loadSettings();
@@ -30,66 +63,12 @@ export default class MetaCopy extends Plugin {
 		this.convertstringToList("copyKey");
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file: TFile) => {
-				const meta = getMeta(this.app, file, this.settings);
-				if (!meta) {
-					return false;
-				}
-				const keyMeta = meta.frontmatterKey;
-				let title = t("command.copy") as string;
-				let icon = "two-blank-pages";
-				const enableMetaCopy = disableMetaCopy(
-					this.app,
-					this.settings,
-					file
-				);
-				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
-					title = (t("command.copyURL") as string);
-					icon = "price-tag-glyph";
-				}
-
-				if (meta.correspondingValue && enableMetaCopy) {
-					menu.addSeparator();
-					menu.addItem((item) => {
-						item.setSection("info");
-						item.setTitle(title)
-							.setIcon(icon)
-							.onClick(async () => {
-								await getValue(this.app, file, this.settings);
-							});
-					});
-					menu.addSeparator();
-				}
-			})
-		);
+				this.enableMenu(menu, file);
+			}));
 
 		this.registerEvent(
 			this.app.workspace.on("editor-menu", (menu, editor, view) => {
-				const meta = getMeta(this.app, view.file, this.settings);
-				if (!meta) {
-					return false;
-				}
-				const keyMeta = meta.frontmatterKey;
-				const enableMetaCopy = disableMetaCopy(
-					this.app,
-					this.settings,
-					view.file
-				);
-				if ((keyMeta === this.settings.keyLink || this.settings.defaultKeyLink) && enableMetaCopy) {
-					menu.addSeparator();
-					menu.addItem((item) => {
-						item.setSection("info");
-						item.setTitle(t("command.copyURL") as string)
-							.setIcon("price-tag-glyph")
-							.onClick(async () => {
-								await getValue(
-									this.app,
-									view.file,
-									this.settings
-								);
-							});
-					});
-					menu.addSeparator();
-				}
+				this.enableMenu(menu, view.file);
 			})
 		);
 
