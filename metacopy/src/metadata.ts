@@ -12,7 +12,6 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): Meta
 	const defaultKey: MetaCopyValue = {
 		frontmatterKey : "DefaultKey",
 		correspondingValue : settings.defaultKeyLink,
-
 	};
 	if (meta === undefined) {
 		if (settings.behaviourLinkCreator !== BehaviourLinkCreator.OBSIDIAN_PATH) {
@@ -24,20 +23,19 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): Meta
 	
 	let linkValue = "";
 	let metaKey = "";
-	if (settings) {
-		if (settings.copyKey.length > 1) {
-			for (let i = 0; i < settings.copyKey.length; i++) {
-				if (meta[settings.copyKey[i]] !== undefined) {
-					linkValue = meta[settings.copyKey[i]].trim();
-					metaKey = settings.copyKey[i].trim();
-					break;
-				}
+	if (settings?.copyKey.length > 1) {
+		for (let i = 0; i < settings.copyKey.length; i++) {
+			if (meta[settings.copyKey[i]] !== undefined) {
+				linkValue = meta[settings.copyKey[i]].trim();
+				metaKey = settings.copyKey[i].trim();
+				break;
 			}
-		} else {
-			linkValue = meta[settings.copyKey[0]];
-			metaKey = settings.copyKey[0];
 		}
+	} else {
+		linkValue = meta[settings.copyKey[0]];
+		metaKey = settings.copyKey[0];
 	}
+
 	const metaKeys: MetaCopyValue = {
 		frontmatterKey: metaKey,
 		correspondingValue: linkValue
@@ -51,8 +49,7 @@ export function getMeta(app: App, file: TFile, settings: MetaCopySettings): Meta
 export function checkMeta(app: App, settings: MetaCopySettings) {
 	const file = app.workspace.getActiveFile();
 	const meta = getMeta(app, file, settings);
-	const cmd = t("command.copy") as string;
-	const checkKey = meta?.frontmatterKey === "DefaultKey" || meta?.frontmatterKey === cmd;
+	const checkKey = meta?.frontmatterKey === "DefaultKey" || meta?.frontmatterKey;
 	return !!file && checkKey;
 }
 
@@ -79,14 +76,10 @@ export function getAllMeta(app: App, file: TFile, settings: MetaCopySettings) {
 			mappedListKey.remove(v);
 		}
 	});
-	const enableMetaCopy = disableMetaCopy(
-		app,
-		settings,
-		file
-	);
-	if (enableMetaCopy && settings.defaultKeyLink) {
+
+	if (settings.enableCopyLink) {
 		mappedListKey[mappedListKey.length] = {
-			key: t("command.copy") as string,
+			key: t("command.suggesterCopyURL") as string,
 			value: settings.defaultKeyLink
 		};
 	}
