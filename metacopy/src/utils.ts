@@ -32,7 +32,8 @@ export function createLink(
 	const folderPath = checkSlash(url).replace(/(^\/|\/$)/, "");
 	const folder = folderPath.split("/").slice(-1)[0];
 	const meta = app.metadataCache.getFileCache(file)?.frontmatter;
-	const cmd = t("command.copy") as string;
+	const cmd = t("command.copyURL") as string;
+	const suggester = t("command.suggesterCopyURL") as string;
 	if (settings) {
 		let baseLink = settings.baseLink;
 		if (meta && meta["baselink"] !== undefined) {
@@ -46,7 +47,7 @@ export function createLink(
 		}
 		else if (settings.behaviourLinkCreator === "categoryKey") {
 			const keyLink = settings.keyLink;
-			if ((metaCopy.frontmatterKey === keyLink) || (metaCopy.frontmatterKey == "DefaultKey") || (metaCopy.frontmatterKey == cmd)) {
+			if ((metaCopy.frontmatterKey === keyLink) || (metaCopy.frontmatterKey == "DefaultKey") || (metaCopy.frontmatterKey == cmd) || (metaCopy.frontmatterKey == suggester)) {
 				if (fileName.replace(".md", "") === folder && folderNote) {
 					fileName = "/";
 				} else {
@@ -117,7 +118,7 @@ export function checkSlash(
 	return link;
 }
 
-export async function copy(content: string, item: string, settings: MetaCopySettings) {
+export async function copy(content: string, item: string, settings: MetaCopySettings): Promise<void> {
 	await navigator.clipboard.writeText(content);
 	let message = (t("command.metadataMessage") as StringFunc)(item);
 	if (item == "DefaultKey" || item == settings.keyLink) {

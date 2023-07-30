@@ -16,6 +16,8 @@ export function disableMetaCopy(app: App, settings: MetaCopySettings, file: TFil
 	} else {
 		if (meta === undefined) {
 			return false; /* Disable Meta Copy ; there is no frontmatter... */
-		} else return !meta[settings.disableKey];
+		} else {
+			return !meta[settings.disableKey];
+		}
 	}
 }

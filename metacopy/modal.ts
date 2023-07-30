@@ -37,7 +37,7 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 			item.value = "- " + item.value.replaceAll(",", "\n- ");
 		}
 		let contents = item.value;
-		const cmd = t("command.copy") as string;
+		const cmd = t("command.suggesterCopyURL") as string;
 		if (item.key === cmd) {
 			contents = createLink(
 				this.file,
@@ -47,6 +47,6 @@ export class CopyMetaSuggester extends FuzzySuggestModal<CopyMetaModal> {
 			);
 		}
 		
-		copy(contents, item.key, this.settings);
+		copy(contents, item.key, this.settings).then();
 	}
 }

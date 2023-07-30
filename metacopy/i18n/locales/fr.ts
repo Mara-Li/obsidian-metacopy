@@ -5,6 +5,10 @@ export default {
 		desc: "La clé dont vous voulez copier la valeur",
 		placeholder: "clé1, clé2, clé3,…",
 	},
+	toggleLinkCreator : {
+		title: "Active le créateur de lien",
+		desc: "Affiche les options pour créer un lien avec une clé de métadonnées.",
+	},
 	linkCreator: {
 		header: "Créateur de lien",
 		baseLink: "Base du lien",
@@ -40,9 +44,8 @@ export default {
 		}
 	},
 	disable: {
-		title: "Désactiver MetaCopy",
-		desc: "Désactiver le menu contextuel de Metacopy avec une clé de métadonnée.",
-		descURL: "Désactive également la création d'URL dans la commande.",
+		title: "Menu contextuel",
+		desc: "Désactiver ou activer le menu contextuel de Metacopy avec une clé de métadonnée.",
 	},
 	menuBehavior: {
 		title: "Comportement du menu",
@@ -53,10 +56,9 @@ export default {
 	command : {
 		metadataMessage: (key: string): string => `Clé de métadonnée "${key}" copiée dans le presse-papier`,
 		metadataMessageURL: "URL envoyé dans le presse-papier",
-		copy: "Copier le lien",
+		copy: (key: string): string => `Metacopy : Copier la clé de ${key}`,
 		copyCmd: (key: string): string  => `Copie de [${key}]`,
 		copyURL: "MetaCopy : Créer URL",
-
-
+		suggesterCopyURL: "Créer URL",
 	},
 };

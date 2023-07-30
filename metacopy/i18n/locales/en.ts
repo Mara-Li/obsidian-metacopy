@@ -5,6 +5,10 @@ export default {
 		desc: "The frontmatterKey which you want to copy the correspondingValue",
 		placeholder: "key1, key2, key3,…",
 	},
+	toggleLinkCreator : {
+		title: "Enable link creator",
+		desc: "Display the settings of the link creator",
+	},
 	linkCreator: {
 		header: "Link Creator",
 		baseLink: "Base link",
@@ -40,13 +44,12 @@ export default {
 		}
 	},
 	disable: {
-		title: "Disable MetaCopy",
-		desc: "Disable Metacopy context menu with a frontmatter frontmatterKey.",
-		descURL: "Also disable the URL creation in command modal.",
+		title: "Context menu",
+		desc: "Disable or enable Metacopy context menu with a frontmatter key.",
 	},
 	menuBehavior: {
 		title: "Menu behavior",
-		desc: "Enable : require a configured frontmatterKey to enable the menu",
+		desc: "Enabled: require a configured frontmatterKey to enable the menu",
 		keyMenu: "Key menu",
 		keyMenuDesc: "The frontmatterKey used to disable/enable the metacopy file menu",
 	},
@@ -54,8 +57,9 @@ export default {
 	command : {
 		metadataMessage: (key: string): string => `Metadata key "${key}" copied to the clipboard.`,
 		metadataMessageURL: "URL send to the clipboard.",
-		copy: "Copy link",
+		copy: (key: string): string => `Metacopy : Copy ${key}`,
 		copyCmd: (key: string): string  => `Copy [${key}]`,
 		copyURL: "MetaCopy : Create URL",
+		suggesterCopyURL: "Create URL",
 	},
 };
